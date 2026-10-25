@@ -1,0 +1,7 @@
+/home/NatanDelReyy/Broadcast-Archive-main/IMPLEMENT.md
+/home/NatanDelReyy/Broadcast-Archive-main/README.md
+/home/NatanDelReyy/Broadcast-Archive-main/pnpm-workspace.yaml
+/home/NatanDelReyy/Broadcast-Archive-main/public/robots.txt
+/home/NatanDelReyy/Broadcast-Archive-main/app/icon.svg
+/home/NatanDelReyy/Broadcast-Archive-main/public/logo-mark-green.svg
+/home/NatanDelReyy/Broadcast-Archive-main/public/logo-mark.svg
