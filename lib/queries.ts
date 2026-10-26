@@ -130,3 +130,64 @@ export async function listAspirations(
   const items = rows.slice(0, 30);
   return { items, next: more ? items[items.length - 1].created_at : null };
 }
+
+export type HomeStats = { total: number; dueThisWeek: number; openPojok: number };
+
+export async function homeStats(today: string, weekEnd: string): Promise<HomeStats> {
+  const sb = supabasePublic();
+  const [total, due, pojok] = await Promise.all([
+    sb.from("broadcasts").select("id", { count: "exact", head: true }).eq("status", "published"),
+    sb.from("broadcasts").select("id", { count: "exact", head: true }).eq("status", "published").gte("deadline", today).lte("deadline", weekEnd),
+    sb.from("pojok").select("id", { count: "exact", head: true }).eq("is_visible", true).eq("is_open", true),
+  ]);
+  return { total: total.count ?? 0, dueThisWeek: due.count ?? 0, openPojok: pojok.count ?? 0 };
+}
+
+export type DeadlineItem = Pick<Broadcast, "id" | "title" | "deadline" | "category" | "body">;
+
+/** Broadcast bertenggat dalam rentang [from, to] (inklusif, "YYYY-MM-DD"). */
+export async function deadlinesInRange(from: string, to: string): Promise<DeadlineItem[]> {
+  const { data } = await supabasePublic()
+    .from("broadcasts")
+    .select("id,title,deadline,category,body")
+    .eq("status", "published")
+    .gte("deadline", from)
+    .lte("deadline", to)
+    .order("deadline", { ascending: true })
+    .limit(500);
+  return (data ?? []) as DeadlineItem[];
+}
+
+export async function broadcastsByIds(ids: string[]): Promise<Broadcast[]> {
+  const valid = ids.filter((id) => /^[0-9a-f-]{36}$/.test(id)).slice(0, 100);
+  if (!valid.length) return [];
+  const { data } = await supabasePublic().from("broadcasts").select("*").eq("status", "published").in("id", valid);
+  const rows = (data ?? []) as Broadcast[];
+  return valid.map((id) => rows.find((r) => r.id === id)).filter((r): r is Broadcast => !!r);
+}
+
+export type Moment = {
+  id: string;
+  title: string;
+  caption: string | null;
+  taken_on: string;
+  image_path: string;
+  image_url: string;
+  width: number | null;
+  height: number | null;
+  is_visible: boolean;
+  sort_order: number;
+  created_at: string;
+};
+
+export async function listMoments(): Promise<Moment[]> {
+  const { data, error } = await supabasePublic()
+    .from("moments")
+    .select("*")
+    .eq("is_visible", true)
+    .order("taken_on", { ascending: false })
+    .order("sort_order", { ascending: true });
+  // Tabel belum dimigrasi: tampilkan kosong, jangan gagalkan halaman.
+  if (error) return [];
+  return (data ?? []) as Moment[];
+}

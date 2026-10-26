@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Inbox } from "lucide-react";
 import { BroadcastCard } from "./BroadcastCard";
 import { Button } from "@/components/ui/Button";
+import { StaggerItem } from "@/components/motion/Reveal";
 import { loadMoreBroadcasts } from "@/app/feed-actions";
 import { categoryOf } from "@/lib/categories";
 import type { Broadcast, FeedParams } from "@/lib/types";
@@ -24,13 +26,20 @@ export function FeedList({
       : params.cat
         ? `Belum ada broadcast di kategori ${categoryOf(params.cat).label}`
         : "Belum ada broadcast di arsip";
-    return <p className="rounded-lg border border-line bg-surface p-6 text-ink-2">{msg}.</p>;
+    return (
+      <div className="glass flex flex-col items-center gap-3 rounded-[22px] px-6 py-12 text-center text-ink-2">
+        <Inbox size={28} strokeWidth={1.5} className="text-muted" aria-hidden />
+        {msg}.
+      </div>
+    );
   }
 
   return (
     <div className="flex flex-col gap-3">
-      {items.map((b) => (
-        <BroadcastCard key={b.id} b={b} />
+      {items.map((b, i) => (
+        <StaggerItem key={b.id} index={i}>
+          <BroadcastCard b={b} />
+        </StaggerItem>
       ))}
       {cursor ? (
         <Button

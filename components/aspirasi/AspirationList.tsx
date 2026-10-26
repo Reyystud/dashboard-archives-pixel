@@ -52,7 +52,7 @@ export function AspirationList({
               type="button"
               aria-pressed={mode === m}
               onClick={() => setMode(m)}
-              className={`min-h-9 cursor-pointer rounded-sm px-3 text-[14px] transition-colors duration-150 ${mode === m ? "bg-green-700 text-white" : "text-ink-2"}`}
+              className={`min-h-9 cursor-pointer rounded-sm px-3 text-[14px] transition-colors duration-150 ${mode === m ? "bg-brand-600 text-white" : "text-ink-2"}`}
             >
               {m === "new" ? "Terbaru" : "Terbanyak"}
             </button>
@@ -64,14 +64,14 @@ export function AspirationList({
         <button
           type="button"
           onClick={onClearFilter}
-          className="mb-3 inline-flex min-h-9 cursor-pointer items-center gap-2 rounded-md bg-sand px-3 text-[14px] text-sand-ink"
+          className="mb-3 inline-flex min-h-9 cursor-pointer items-center gap-2 rounded-md bg-sand/15 px-3 text-[14px] text-sand"
         >
           {filter} <X size={16} strokeWidth={1.75} aria-label="Hapus filter" />
         </button>
       ) : null}
 
       {mode === "top" ? (
-        <ul className="divide-y divide-line rounded-lg border border-line bg-surface">
+        <ul className="divide-y divide-line glass rounded-[22px]">
           {cloud
             .filter((c) => !filter || c.normalized === filter)
             .map((c) => (
@@ -84,7 +84,7 @@ export function AspirationList({
         </ul>
       ) : (
         <>
-          <ul className="divide-y divide-line rounded-lg border border-line bg-surface">
+          <ul className="divide-y divide-line glass rounded-[22px]">
             {merged.map((a) => (
               <li key={a.id} className="flex items-baseline justify-between gap-3 p-3">
                 <span className="break-words">{a.text}</span>

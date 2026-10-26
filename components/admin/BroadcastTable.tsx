@@ -45,7 +45,7 @@ export function BroadcastTable({ rows }: { rows: Broadcast[] }) {
     });
   const allSelected = rows.length > 0 && rows.every((r) => selected.has(r.id));
 
-  if (!rows.length) return <p className="rounded-lg border border-line bg-surface p-6 text-ink-2">Tidak ada broadcast yang cocok dengan filter ini.</p>;
+  if (!rows.length) return <p className="glass rounded-[22px] p-6 text-ink-2">Tidak ada broadcast yang cocok dengan filter ini.</p>;
 
   return (
     <div>
@@ -68,7 +68,7 @@ export function BroadcastTable({ rows }: { rows: Broadcast[] }) {
       ) : null}
 
       {/* Desktop */}
-      <div className="hidden overflow-x-auto rounded-lg border border-line bg-surface md:block">
+      <div className="hidden overflow-x-auto glass rounded-[22px] md:block">
         <table className="w-full text-left text-[14px]">
           <thead className="border-b border-line font-mono text-[12px] uppercase text-muted">
             <tr>
@@ -95,7 +95,7 @@ export function BroadcastTable({ rows }: { rows: Broadcast[] }) {
                 <td className="p-2"><Switch label="Tampil" checked={r.status === "published"} disabled={pending} onChange={(v) => run(() => setBroadcastStatus([r.id], v ? "published" : "hidden"))} /></td>
                 <td className="p-2">
                   <button type="button" aria-label={r.pinned ? "Lepas sematan" : "Sematkan"} onClick={() => run(() => toggleBroadcastPin(r.id, !r.pinned))} className="grid size-11 cursor-pointer place-items-center text-ink-2">
-                    {r.pinned ? <Pin size={18} strokeWidth={1.75} className="text-green-700" /> : <PinOff size={18} strokeWidth={1.75} />}
+                    {r.pinned ? <Pin size={18} strokeWidth={1.75} className="text-brand-400" /> : <PinOff size={18} strokeWidth={1.75} />}
                   </button>
                 </td>
                 <td className="p-2"><RowMenu r={r} pending={pending} run={run} onDelete={() => setConfirm([r])} /></td>
@@ -108,7 +108,7 @@ export function BroadcastTable({ rows }: { rows: Broadcast[] }) {
       {/* Mobile */}
       <ul className="flex flex-col gap-3 md:hidden">
         {rows.map((r) => (
-          <li key={r.id} className={`rounded-lg border border-line bg-surface p-3 ${r.status === "hidden" ? "opacity-60" : ""}`}>
+          <li key={r.id} className={`glass rounded-[22px] p-3 ${r.status === "hidden" ? "opacity-60" : ""}`}>
             <div className="flex items-start gap-2">
               <input type="checkbox" aria-label={`Pilih ${r.title}`} checked={selected.has(r.id)} onChange={() => toggle(r.id)} className="mt-1 size-5" />
               <Link href={`/admin/broadcasts/${r.id}`} className="line-clamp-2 flex-1 font-medium">{r.title}</Link>
@@ -147,7 +147,7 @@ export function BroadcastTable({ rows }: { rows: Broadcast[] }) {
 }
 
 function RowMenu({ r, pending, run, onDelete }: { r: Broadcast; pending: boolean; run: (fn: () => Promise<Result>, ok?: string) => void; onDelete: () => void }) {
-  const item = "flex min-h-11 cursor-pointer items-center px-3 text-[14px] outline-none data-[highlighted]:bg-green-50";
+  const item = "flex min-h-11 cursor-pointer items-center px-3 text-[14px] outline-none data-[highlighted]:bg-brand-50";
   return (
     <DM.Root>
       <DM.Trigger aria-label="Aksi" disabled={pending} className="grid size-11 cursor-pointer place-items-center text-ink-2">

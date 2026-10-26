@@ -87,9 +87,9 @@ export function PojokBoard({
 
   return (
     <div className="space-y-6">
-      <section aria-label="Word cloud" className="relative rounded-lg border border-line bg-surface p-4">
+      <section aria-label="Word cloud" className="relative glass rounded-[22px] p-4">
         <span className="absolute right-4 top-4 flex items-center gap-2 font-mono text-[12px] text-muted">
-          <span className="ring-dot" aria-hidden /> live
+          <span className="ring-dot live" aria-hidden /> live
         </span>
         <CloudView
           items={sorted}
@@ -113,7 +113,7 @@ export function PojokBoard({
           }}
         />
       ) : (
-        <p className="rounded-lg border border-line bg-surface p-4 text-ink-2">Pojok ini sudah ditutup.</p>
+        <p className="glass rounded-[22px] p-4 text-ink-2">Pojok ini sudah ditutup.</p>
       )}
 
       <div ref={listRef} className="scroll-mt-32">

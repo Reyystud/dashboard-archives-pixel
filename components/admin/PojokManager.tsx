@@ -44,11 +44,11 @@ export function PojokManager({ rows }: { rows: PojokRow[] }) {
       </div>
 
       {rows.length === 0 ? (
-        <p className="mt-4 rounded-lg border border-line bg-surface p-6 text-ink-2">Belum ada pojok. Buat satu untuk mulai mengumpulkan aspirasi.</p>
+        <p className="mt-4 glass rounded-[22px] p-6 text-ink-2">Belum ada pojok. Buat satu untuk mulai mengumpulkan aspirasi.</p>
       ) : (
         <ul className="mt-4 flex flex-col gap-3">
           {rows.map((p) => (
-            <li key={p.id} className="rounded-lg border border-line bg-surface p-4">
+            <li key={p.id} className="glass rounded-[22px] p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
                   <Link href={`/admin/aspirasi/${p.id}`} className="text-[16px] font-semibold hover:underline">{p.title}</Link>

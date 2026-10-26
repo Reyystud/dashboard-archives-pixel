@@ -36,13 +36,13 @@ export function DetailActions({ body, title }: { body: string; title: string }) 
 export function StickyBar({ body, primary }: { body: string; primary?: { url: string; label: string } }) {
   const toast = useToast();
   return (
-    <div className="fixed inset-x-0 bottom-0 z-30 flex gap-2 border-t border-line bg-surface p-3 md:hidden">
+    <div className="glass-strong fixed inset-x-3 bottom-[84px] z-30 flex gap-2 rounded-[22px] p-2 md:hidden">
       {primary ? (
         <a
           href={primary.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex min-h-11 flex-1 items-center justify-center rounded-md bg-green-700 px-4 text-[15px] font-medium text-white active:bg-green-800"
+          className="flex min-h-11 flex-1 items-center justify-center rounded-full bg-gradient-to-b from-brand-500 to-brand-700 px-4 text-[15px] font-medium text-white active:scale-[0.98]"
         >
           {primary.label}
         </a>

@@ -59,13 +59,13 @@ export default async function AdminPojok({ params, searchParams }: { params: Pro
         </div>
       </div>
 
-      <section aria-label="Pratinjau cloud" className="mt-4 rounded-lg border border-line bg-surface p-4">
+      <section aria-label="Pratinjau cloud" className="mt-4 glass rounded-[22px] p-4">
         <CloudView items={cloud} />
       </section>
 
       <nav className="mt-6 flex gap-1 overflow-x-auto border-b border-line" aria-label="Filter">
         {tabs.map(([k, label]) => (
-          <Link key={k} href={`/admin/aspirasi/${p.id}?tab=${k}`} className={`flex min-h-11 flex-none items-center border-b-2 px-3 ${tab === k ? "border-green-700 font-medium" : "border-transparent text-ink-2"}`}>{label}</Link>
+          <Link key={k} href={`/admin/aspirasi/${p.id}?tab=${k}`} className={`flex min-h-11 flex-none items-center border-b-2 px-3 ${tab === k ? "border-brand-700 font-medium" : "border-transparent text-ink-2"}`}>{label}</Link>
         ))}
       </nav>
       <div className="mt-3">

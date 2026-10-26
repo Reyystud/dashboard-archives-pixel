@@ -32,7 +32,7 @@ export function AdminAspirationList({ rows }: { rows: AdminAspiration[] }) {
   const ids = [...sel];
   const toggle = (id: string) => setSel((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
 
-  if (!rows.length) return <p className="rounded-lg border border-line bg-surface p-6 text-ink-2">Tidak ada aspirasi di tab ini.</p>;
+  if (!rows.length) return <p className="glass rounded-[22px] p-6 text-ink-2">Tidak ada aspirasi di tab ini.</p>;
 
   return (
     <div>
@@ -45,7 +45,7 @@ export function AdminAspirationList({ rows }: { rows: AdminAspiration[] }) {
         </div>
       ) : null}
 
-      <ul className="divide-y divide-line rounded-lg border border-line bg-surface">
+      <ul className="divide-y divide-line glass rounded-[22px]">
         {rows.map((a) => (
           <li key={a.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 p-3">
             <input type="checkbox" aria-label={`Pilih ${a.text}`} checked={sel.has(a.id)} onChange={() => toggle(a.id)} className="size-5" />

@@ -291,3 +291,89 @@ export async function signOut(): Promise<void> {
   await sb.auth.signOut();
   redirect("/admin-login");
 }
+
+// ========== MOMEN ==========
+const MomentInput = z.object({
+  title: z.string().trim().min(1, "Judul wajib diisi").max(120),
+  caption: z.string().trim().max(600).nullable(),
+  taken_on: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Tanggal tidak valid"),
+  is_visible: z.boolean(),
+  sort_order: z.number().int().min(-1000).max(1000),
+});
+export type MomentInputT = z.infer<typeof MomentInput>;
+const MOMENT_MIME = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/avif": "avif" } as const;
+
+function revalidateMoments() {
+  revalidatePath("/momen");
+  revalidatePath("/admin/momen");
+}
+
+/** Signed upload URL supaya file besar tidak lewat server action (batas body 1 MB / Vercel 4.5 MB). */
+export async function createMomentUpload(mime: string): Promise<Result & { path?: string; token?: string }> {
+  await requireAdmin();
+  try {
+    const ext = MOMENT_MIME[z.enum(Object.keys(MOMENT_MIME) as [keyof typeof MOMENT_MIME]).parse(mime)];
+    const path = `${new Date().toISOString().slice(0, 7)}/${crypto.randomUUID()}.${ext}`;
+    const { data, error } = await supabaseAdmin().storage.from("moments").createSignedUploadUrl(path);
+    if (error) throw error;
+    return { ok: true, path: data.path, token: data.token };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function createMoment(
+  data: Partial<MomentInputT> & { image_path: string; width?: number | null; height?: number | null },
+): Promise<Result> {
+  await requireAdmin();
+  try {
+    const input = MomentInput.parse({ caption: null, is_visible: true, sort_order: 0, ...data });
+    const path = z.string().regex(/^\d{4}-\d{2}\/[0-9a-f-]{36}\.(jpg|png|webp|avif)$/).parse(data.image_path);
+    const db = supabaseAdmin();
+    const image_url = db.storage.from("moments").getPublicUrl(path).data.publicUrl;
+    const dim = z.number().int().positive().max(20000).nullable().catch(null);
+    const { error } = await db.from("moments").insert({
+      ...input,
+      caption: input.caption || null,
+      image_path: path,
+      image_url,
+      width: dim.parse(data.width ?? null),
+      height: dim.parse(data.height ?? null),
+    });
+    if (error) throw error;
+    revalidateMoments();
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function updateMoment(id: string, data: Partial<MomentInputT>): Promise<Result> {
+  await requireAdmin();
+  try {
+    uuid.parse(id);
+    const patch = MomentInput.partial().parse(data);
+    const { error } = await supabaseAdmin().from("moments").update(patch).eq("id", id);
+    if (error) throw error;
+    revalidateMoments();
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+export async function deleteMoment(id: string): Promise<Result> {
+  await requireAdmin();
+  try {
+    uuid.parse(id);
+    const db = supabaseAdmin();
+    const { data } = await db.from("moments").select("image_path").eq("id", id).single();
+    const { error } = await db.from("moments").delete().eq("id", id);
+    if (error) throw error;
+    if (data?.image_path) await db.storage.from("moments").remove([data.image_path]);
+    revalidateMoments();
+    return { ok: true };
+  } catch (e) {
+    return fail(e);
+  }
+}

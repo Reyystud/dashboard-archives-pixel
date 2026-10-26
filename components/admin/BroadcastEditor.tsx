@@ -77,7 +77,7 @@ export function BroadcastEditor({ b }: { b: Broadcast }) {
             <label className="flex min-h-11 items-center gap-2 self-end"><input type="checkbox" className="size-5" checked={f.pinned} onChange={(e) => set("pinned", e.target.checked)} /> Sematkan di atas</label>
           </div>
 
-          <fieldset className="space-y-2 rounded-lg border border-line bg-surface p-3">
+          <fieldset className="space-y-2 glass rounded-[22px] p-3">
             <legend className="px-1 text-[13px] font-medium text-ink-2">Link</legend>
             {links.map((l, i) => (
               <div key={i} className="flex flex-wrap items-center gap-2">
@@ -103,7 +103,7 @@ export function BroadcastEditor({ b }: { b: Broadcast }) {
           </fieldset>
 
           {media.length ? (
-            <fieldset className="rounded-lg border border-line bg-surface p-3">
+            <fieldset className="glass rounded-[22px] p-3">
               <legend className="px-1 text-[13px] font-medium text-ink-2">Media</legend>
               <div className="flex flex-wrap gap-3">
                 {media.map((m) => (
@@ -129,7 +129,7 @@ export function BroadcastEditor({ b }: { b: Broadcast }) {
             <p className="mb-2 font-mono text-[12px] uppercase text-muted">Pratinjau</p>
             <BroadcastCard b={preview} />
           </div>
-          <dl className="space-y-1 rounded-lg border border-line bg-surface p-3 font-mono text-[12px]">
+          <dl className="space-y-1 glass rounded-[22px] p-3 font-mono text-[12px]">
             <div className="flex justify-between gap-3"><dt className="text-muted">sumber</dt><dd>{b.category_source === "ai" ? "otomatis" : b.category_source}</dd></div>
             <div className="flex justify-between gap-3"><dt className="text-muted">model</dt><dd className="truncate">{b.ai_model ?? "-"}</dd></div>
             <div className="flex justify-between gap-3"><dt className="text-muted">confidence</dt><dd>{b.ai_confidence?.toFixed(2) ?? "-"}</dd></div>

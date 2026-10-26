@@ -4,10 +4,10 @@ export function Badge({ children, tone = "neutral" }: { children: React.ReactNod
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-sm px-2 py-0.5 font-mono text-[12px]",
+        "inline-flex items-center rounded-full px-2.5 py-0.5 font-mono text-[12px]",
         tone === "neutral" && "border border-line text-ink-2",
         tone === "danger" && "bg-danger-bg text-danger",
-        tone === "sand" && "bg-sand text-sand-ink",
+        tone === "sand" && "bg-sand/15 text-sand",
       )}
     >
       {children}

@@ -132,122 +132,56 @@ vercel.json
 
 ---
 
-## 4. Design system
+## 4. Design system (PIXEL'25, revisi Okt 2026)
+
+Desain awal (hijau, minimalis, tanpa hero) diganti identitas angkatan **PIXEL'25 HMIF ITB**. Sumber kebenaran token: `app/globals.css` (`@theme`).
 
 ### 4.1 Arah visual
 
-Tema hijau putih. Warna aksen kedua diambil dari logo: **sand/beige** (cincin dan blok kecil di logo). Bentuk diambil dari logo: **kotak dengan radius besar dan celah konsisten**, dan **titik bercincin** sebagai penanda.
+- Gelap: latar navy `#05070F` → `#0A1230` dengan blob biru buram dan grid pixel halus (`.backdrop-scene` di `app/layout.tsx`).
+- Permukaan kaca (glassmorphism): `.glass` (kartu) dan `.glass-strong` (navbar, dialog, bottom nav). Blur 16–24px, border putih 8–16%.
+- Aksen: biru logo `brand-700 #205BC2` (tombol, pill aktif) dan krem ring `sand #E8DCCB` (penanda "baru", "live", angka "'25").
+- Teks biru di atas gelap memakai `brand-300/400` (kontras AA), bukan `brand-700`.
 
-Logo yang diberikan berwarna biru. Biru tidak masuk palet UI. Tampilkan logo apa adanya hanya di header (ukuran kecil, 28px tinggi) dan di halaman login. Siapkan juga varian monokrom hijau `public/logo-mark-green.svg` jika owner menyediakannya; komponen `Logo` harus mendukung prop `variant="original" | "green"`.
+### 4.2 Logo
 
-### 4.2 Token warna (taruh di `globals.css`, Tailwind v4 `@theme`)
-
-```css
-@theme {
-  --color-bg: #F7F8F5;          /* putih hangat, sedikit hijau */
-  --color-surface: #FFFFFF;
-  --color-ink: #0F2318;         /* teks utama */
-  --color-ink-2: #3D5246;       /* teks sekunder */
-  --color-muted: #6B7C72;       /* meta */
-  --color-line: #E2E8E3;        /* border */
-  --color-line-strong: #CBD6CE;
-
-  --color-green-950: #0A2A1B;
-  --color-green-800: #0F4D30;
-  --color-green-700: #136A40;   /* PRIMARY */
-  --color-green-600: #198754;
-  --color-green-500: #22A866;
-  --color-green-100: #E2F3E8;
-  --color-green-50:  #F1F9F4;
-
-  --color-sand: #E8DCCB;        /* dari logo */
-  --color-sand-2: #C9BBA7;
-  --color-sand-ink: #6E604E;
-
-  --color-danger: #B42318;
-  --color-danger-bg: #FDECEA;
-  --color-warn: #9A6700;
-
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;            /* kartu, meniru kotak logo */
-
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-```
-
-Mode gelap: TIDAK diimplementasikan (scope). Jangan tambahkan toggle.
+- Geometri logo ada di `lib/brand/pixel.ts` (diukur dari "LOGO ANGKATAN.png") dan dipakai bersama oleh `PixelMark` (SVG), `IntroLoader`, dan `PixelLogo3D`.
+- `public/brand/pixel-mark.svg` dan `app/icon.svg` dihasilkan dari geometri yang sama.
 
 ### 4.3 Warna kategori
 
-Semua kategori memakai tag netral (background `surface`, border `line`) dengan **kotak kecil 8x8 radius 2px** berwarna sebagai penanda. Jangan warnai seluruh tag dengan warna terang.
-
-| key | label | warna kotak |
-|---|---|---|
-| magang | Magang | #136A40 |
-| loker | Loker | #0F4D30 |
-| akademik | Akademik | #3E7CB1 |
-| proker_hmif | Proker HMIF | #22A866 |
-| kegiatan_angkatan | Kegiatan Angkatan | #C9BBA7 |
-| kegiatan_eksternal | Kegiatan External | #8A6D3B |
-| perlombaan | Perlombaan | #B5562B |
-| merch | Merch | #7A5BA6 |
-| beasiswa | Beasiswa | #9A6700 |
-| lainnya | Lainnya | #9AA59F |
-
-Definisikan di `lib/categories.ts` sebagai satu sumber kebenaran:
-
-```ts
-export const CATEGORIES = [
-  { key: "magang", label: "Magang", color: "#136A40", hint: "lowongan internship, program magang perusahaan/startup/lab" },
-  { key: "loker", label: "Loker", color: "#0F4D30", hint: "lowongan kerja full-time/part-time/freelance, bukan magang" },
-  { key: "akademik", label: "Akademik", color: "#3E7CB1", hint: "kuliah, jadwal kelas, ujian, nilai, tugas, dosen, prodi, perwalian, KRS, wisuda" },
-  { key: "proker_hmif", label: "Proker HMIF", color: "#22A866", hint: "program kerja atau kegiatan yang diselenggarakan HMIF ITB" },
-  { key: "kegiatan_angkatan", label: "Kegiatan Angkatan", color: "#C9BBA7", hint: "acara internal satu angkatan: makrab, bukber, foto angkatan, iuran angkatan" },
-  { key: "kegiatan_eksternal", label: "Kegiatan External", color: "#8A6D3B", hint: "acara dari luar HMIF: webinar, seminar, workshop, event unit/kampus lain, perusahaan" },
-  { key: "perlombaan", label: "Perlombaan", color: "#B5562B", hint: "lomba, kompetisi, hackathon, CTF, call for team" },
-  { key: "merch", label: "Merch", color: "#7A5BA6", hint: "penjualan merchandise, PO jaket/kaos/stiker, danusan" },
-  { key: "beasiswa", label: "Beasiswa", color: "#9A6700", hint: "beasiswa, bantuan dana pendidikan, pendaftaran beasiswa" },
-  { key: "lainnya", label: "Lainnya", color: "#9AA59F", hint: "tidak cocok dengan kategori lain" },
-] as const;
-export type CategoryKey = (typeof CATEGORIES)[number]["key"];
-export const CATEGORY_KEYS = CATEGORIES.map((c) => c.key) as [CategoryKey, ...CategoryKey[]];
-export const categoryOf = (k: string) => CATEGORIES.find((c) => c.key === k) ?? CATEGORIES[9];
-```
+Di `lib/categories.ts`; versi terang supaya terbaca di latar gelap.
 
 ### 4.4 Tipografi
 
-- Geist Sans untuk semua teks. Geist Mono untuk meta (waktu, nama grup, hitungan, ID).
-- Skala: 13 (meta), 15 (body mobile), 16 (body desktop), 17 semibold (judul kartu), 22 (judul halaman mobile), 28 (judul halaman desktop). Line-height body 1.6.
-- `font-variant-numeric: tabular-nums` untuk angka.
+- Display/heading: Space Grotesk (`--font-display`, via `next/font/google`, self-host). Body: Geist Sans. Meta: Geist Mono.
+- Label section memakai mono uppercase kecil berawalan nomor ("01 · Arsip").
 
-### 4.5 Aturan anti AI slop (WAJIB)
+### 4.5 Motion
 
-- Tidak ada hero section besar dengan tagline di tengah. Halaman utama langsung menampilkan feed.
-- Tidak ada gradient ungu/biru, glassmorphism, blur backdrop dekoratif, glow, atau shadow besar. Shadow maksimal `0 1px 2px rgba(15,35,24,.06)`.
-- Tidak ada emoji di UI.
-- Tidak ada teks generik seperti "Welcome to", "Unlock", "Seamless", "Powered by AI". Indikator hasil AI cukup teks kecil "otomatis" di admin.
-- Satu warna aksen aktif per layar (hijau). Sand hanya untuk penanda sekunder (titik bercincin, garis aktif, highlight cloud).
-- Border 1px `line` untuk memisahkan, bukan kartu mengambang.
-- Empty state menjelaskan kondisi nyata ("Belum ada broadcast di kategori Beasiswa"), bukan ilustrasi.
-- Loading memakai skeleton dengan bentuk kartu yang sama, bukan spinner.
-- Motion: hanya transisi 150ms untuk hover/press dan animasi pertumbuhan kata di cloud. Hormati `prefers-reduced-motion`.
+- Framer Motion (`motion/react`), dibungkus `MotionConfig reducedMotion="user"` di `components/Providers.tsx`.
+- Intro (`components/motion/IntroLoader.tsx`): tile logo tersusun, ring mengunci, wordmark muncul; sekali per sesi, bisa di-skip dengan klik, dilewati otomatis untuk reduced motion. Penanda `html[data-intro="done"]` dipasang skrip boot di `<head>`.
+- Logo 3D (`components/three/PixelLogo3D.tsx`, React Three Fiber): path SVG logo di-extrude, merakit setelah intro, mengikuti pointer, terurai sedikit saat scroll. Fallback ke SVG bila tanpa WebGL/reduced motion. Lingkungan cahaya memakai `Lightformer` lokal (tanpa unduh HDR, sesuai CSP).
+- Kartu: `TiltCard` (tilt + kilau mengikuti kursor, mouse saja). List: `StaggerItem`. Section: `Reveal`.
+- `app/template.tsx` hanya menganimasikan opacity: transform di sana akan merusak elemen `fixed`/`sticky`.
 
-### 4.6 Elemen tanda tangan (dari logo)
+### 4.6 Aturan
 
-- **Titik bercincin**: lingkaran 10px hijau-950 dengan ring 3px sand. Dipakai sebagai indikator "baru" (broadcast < 24 jam) dan indikator "live" di Pojok Aspirasi.
-- **Grid kotak**: header memakai logo; tidak ada pola dekoratif lain.
+- Tidak ada emoji sebagai ikon (pakai lucide).
+- Target sentuh minimal 44px. Fokus keyboard selalu terlihat (`outline brand-400`).
+- Loading memakai skeleton kaca (`components/ui/PageLoading.tsx`, `loading.tsx` per route).
+- Empty state menjelaskan kondisi nyata.
 
 ### 4.7 Komponen dasar
 
-- Button primary: bg green-700, teks putih, radius md, tinggi 44 (mobile) / 40 (desktop), active bg green-800.
-- Button secondary: bg surface, border line-strong, teks ink.
-- Button link (tombol link di broadcast): bg green-50, border green-100, teks green-800, ikon `ExternalLink` di kanan, tinggi 44, lebar penuh di mobile.
-- Input/Textarea: border line-strong, focus ring 2px green-500 offset 1.
-- Semua target sentuh minimal 44x44.
+`components/ui/*` (Button pill, field kaca, Dialog/Toast glass-strong), `components/NavTabs.tsx` (navbar desktop + bottom nav mobile, indikator `layoutId`), `components/CommandPalette.tsx` (cmdk, ⌘K / Ctrl+K / "/").
 
----
+### 4.8 Fitur angkatan
+
+- **Disimpan & "Baru"**: bookmark di localStorage (`lib/client/saved.ts`), halaman `/disimpan` mengambil detail via `GET /api/broadcasts?ids=`. Badge "Baru" = masuk setelah kunjungan sebelumnya.
+- **Kalender**: `/kalender?m=YYYY-MM`, feed langganan `GET /api/ics`, per broadcast `GET /api/ics/[id]`, tombol Google Calendar (`lib/calendar.ts`).
+- **Command palette**: `GET /api/search?q=`.
+- **Momen angkatan**: tabel `moments` + bucket `moments` (`supabase/migrations/0002_moments.sql`), galeri `/momen` dengan lightbox, kelola di `/admin/momen` (unggah lewat signed upload URL).
 
 ## 5. Database (Supabase)
 

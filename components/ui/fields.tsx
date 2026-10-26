@@ -2,7 +2,7 @@ import { forwardRef, type InputHTMLAttributes, type SelectHTMLAttributes, type T
 import { cn } from "@/lib/cn";
 
 const field =
-  "w-full rounded-md border border-line-strong bg-surface px-3 min-h-11 md:min-h-10 text-[15px] text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-green-500 focus-visible:outline-offset-1";
+  "w-full rounded-[14px] border border-line-strong bg-white/5 px-3.5 backdrop-blur-md transition-colors hover:border-white/25 min-h-11 md:min-h-10 text-[15px] text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-brand-400 focus-visible:outline-offset-1";
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(function Input(
   { className, ...p },

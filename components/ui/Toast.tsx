@@ -20,12 +20,12 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
           <RT.Root
             key={t.id}
             onOpenChange={(o) => !o && setItems((l) => l.filter((x) => x.id !== t.id))}
-            className={`rounded-md border px-4 py-3 text-[14px] ${t.error ? "bg-danger-bg border-danger/30 text-danger" : "bg-surface border-line-strong text-ink"}`}
+            className={`rounded-2xl px-4 py-3 text-[14px] data-[state=open]:animate-[pop-in_250ms_cubic-bezier(0.22,1,0.36,1)] ${t.error ? "glass-strong border-danger/40! text-danger" : "glass-strong text-ink"}`}
           >
             <RT.Description>{t.text}</RT.Description>
           </RT.Root>
         ))}
-        <RT.Viewport className="fixed bottom-20 md:bottom-4 left-1/2 -translate-x-1/2 z-[60] flex w-[calc(100vw-32px)] max-w-sm flex-col gap-2 outline-none" />
+        <RT.Viewport className="fixed bottom-24 md:bottom-4 left-1/2 -translate-x-1/2 z-[60] flex w-[calc(100vw-32px)] max-w-sm flex-col gap-2 outline-none" />
       </RT.Provider>
     </Ctx.Provider>
   );

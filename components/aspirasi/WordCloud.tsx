@@ -17,9 +17,9 @@ export function arrange<T>(sortedDesc: T[]): T[] {
 }
 
 function colorFor(rank: number) {
-  if (rank === 0) return "var(--color-green-800)";
-  if (rank <= 4) return "var(--color-green-700)";
-  return rank % 2 ? "var(--color-green-600)" : "var(--color-sand-ink)";
+  if (rank === 0) return "var(--color-brand-300)";
+  if (rank <= 4) return "var(--color-brand-400)";
+  return rank % 2 ? "var(--color-brand-200)" : "var(--color-sand)";
 }
 
 export function CloudView({
@@ -65,7 +65,7 @@ export function CloudView({
             className={cn(
               "cloud-word cursor-pointer text-center",
               w.hidden && "line-through opacity-35",
-              selected === w.normalized && "bg-sand",
+              selected === w.normalized && "bg-white/10",
             )}
           >
             {w.display_text}

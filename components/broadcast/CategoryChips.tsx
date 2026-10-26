@@ -1,64 +1,88 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "motion/react";
 import { CATEGORIES } from "@/lib/categories";
 import { cn } from "@/lib/cn";
 
+// #arsip: setelah memilih kategori, langsung lompat ke feed (melewati hero).
 function href(cat: string | undefined, q?: string) {
   const sp = new URLSearchParams();
   if (cat) sp.set("cat", cat);
   if (q) sp.set("q", q);
   const s = sp.toString();
-  return s ? `/?${s}` : "/";
+  return s ? `/?${s}#arsip` : "/#arsip";
 }
 
 export function CategoryChips({ active, q, counts }: { active?: string; q?: string; counts: Record<string, number> }) {
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
-  return (
-    <nav aria-label="Kategori" className="no-scrollbar flex gap-2 overflow-x-auto py-2">
+  const chip = (key: string | undefined, label: string, color: string | null, n: number) => {
+    const on = active === key;
+    return (
       <Link
-        href={href(undefined, q)}
+        key={key ?? "all"}
+        href={href(key, q)}
+        aria-current={on ? "true" : undefined}
         className={cn(
-          "flex min-h-11 flex-none items-center gap-2 rounded-md border px-3 text-[14px] transition-colors duration-150",
-          !active ? "border-green-700 bg-green-700 text-white" : "border-line bg-surface text-ink-2",
+          "relative flex min-h-10 flex-none items-center gap-2 rounded-full border px-3.5 text-[14px] whitespace-nowrap transition-colors duration-200",
+          on ? "border-transparent text-white" : "border-line bg-white/5 text-ink-2 hover:text-ink",
         )}
       >
-        Semua <span className="font-mono text-[12px] opacity-80">{total}</span>
+        {on ? (
+          <motion.span
+            layoutId="chip-active"
+            className="absolute inset-0 -z-10 rounded-full bg-gradient-to-b from-brand-500 to-brand-700"
+            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+          />
+        ) : null}
+        {color ? <span aria-hidden className="inline-block size-2 rounded-[3px]" style={{ background: color }} /> : null}
+        {label}
+        <span className="font-mono text-[12px] opacity-75">{n}</span>
       </Link>
-      {CATEGORIES.map((c) => (
-        <Link
-          key={c.key}
-          href={href(c.key, q)}
-          className={cn(
-            "flex min-h-11 flex-none items-center gap-2 rounded-md border px-3 text-[14px] whitespace-nowrap transition-colors duration-150",
-            active === c.key ? "border-green-700 bg-green-700 text-white" : "border-line bg-surface text-ink-2",
-          )}
-        >
-          <span aria-hidden className="inline-block size-2 rounded-[2px]" style={{ background: c.color }} />
-          {c.label}
-          <span className="font-mono text-[12px] opacity-80">{counts[c.key] ?? 0}</span>
-        </Link>
-      ))}
+    );
+  };
+  return (
+    <nav aria-label="Kategori" className="no-scrollbar isolate flex gap-2 overflow-x-auto py-2">
+      {chip(undefined, "Semua", null, total)}
+      {CATEGORIES.map((c) => chip(c.key, c.label, c.color, counts[c.key] ?? 0))}
     </nav>
   );
 }
 
 export function CategorySidebar({ active, q, counts }: { active?: string; q?: string; counts: Record<string, number> }) {
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
-  const item = (key: string | undefined, label: string, color: string | null, n: number) => (
-    <Link
-      key={key ?? "all"}
-      href={href(key, q)}
-      className={cn(
-        "flex min-h-10 items-center gap-2 border-l-2 px-3 text-[14px] transition-colors duration-150",
-        active === key ? "border-green-700 bg-green-50 font-medium text-green-800" : "border-transparent text-ink-2 hover:bg-green-50",
-      )}
-    >
-      {color ? <span aria-hidden className="inline-block size-2 rounded-[2px]" style={{ background: color }} /> : <span className="size-2" />}
-      <span className="flex-1">{label}</span>
-      <span className="font-mono text-[12px] text-muted">{n}</span>
-    </Link>
-  );
+  const item = (key: string | undefined, label: string, color: string | null, n: number) => {
+    const on = active === key;
+    return (
+      <Link
+        key={key ?? "all"}
+        href={href(key, q)}
+        aria-current={on ? "true" : undefined}
+        className={cn(
+          "relative flex min-h-10 items-center gap-2.5 rounded-xl px-3 text-[14px] transition-colors duration-200",
+          on ? "font-medium text-ink" : "text-ink-2 hover:bg-white/5 hover:text-ink",
+        )}
+      >
+        {on ? (
+          <motion.span
+            layoutId="side-active"
+            className="absolute inset-0 -z-10 rounded-xl border border-brand-500/30 bg-brand-50"
+            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+          />
+        ) : null}
+        {color ? (
+          <span aria-hidden className="inline-block size-2 rounded-[3px]" style={{ background: color, boxShadow: on ? `0 0 10px ${color}` : undefined }} />
+        ) : (
+          <span className="size-2" />
+        )}
+        <span className="flex-1">{label}</span>
+        <span className="font-mono text-[12px] text-muted">{n}</span>
+      </Link>
+    );
+  };
   return (
-    <nav aria-label="Kategori" className="sticky top-[72px] flex flex-col">
+    <nav aria-label="Kategori" className="glass sticky top-[92px] isolate flex flex-col gap-0.5 rounded-[22px] p-2">
+      <p className="px-3 pb-1 pt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted">Kategori</p>
       {item(undefined, "Semua", null, total)}
       {CATEGORIES.map((c) => item(c.key, c.label, c.color, counts[c.key] ?? 0))}
     </nav>

@@ -1,29 +1,40 @@
 import Link from "next/link";
-import { deadlineParts } from "@/lib/format";
+import { ArrowRight } from "lucide-react";
+import { daysUntil, deadlineParts } from "@/lib/format";
 
 export function DeadlineRail({ items }: { items: { id: string; title: string; deadline: string | null }[] }) {
   return (
-    <aside aria-label="Tenggat terdekat" className="sticky top-[72px]">
-      <h2 className="mb-3 font-mono text-[13px] uppercase tracking-wide text-muted">Tenggat terdekat</h2>
+    <aside aria-label="Tenggat terdekat" className="glass sticky top-[92px] rounded-[22px] p-2">
+      <div className="flex items-center justify-between px-3 pb-1 pt-2">
+        <h2 className="font-mono text-[11px] uppercase tracking-[0.12em] text-muted">Tenggat terdekat</h2>
+        <Link href="/kalender" className="inline-flex min-h-8 items-center gap-1 text-[12px] text-brand-300 hover:text-brand-200">
+          Kalender <ArrowRight size={13} aria-hidden />
+        </Link>
+      </div>
       {items.length ? (
-        <ul className="divide-y divide-line rounded-lg border border-line bg-surface">
+        <ul className="flex flex-col">
           {items.map((d) => {
             const p = deadlineParts(d.deadline!);
+            const left = daysUntil(d.deadline!);
             return (
               <li key={d.id}>
-                <Link href={`/b/${d.id}`} className="flex gap-3 p-3 transition-colors duration-150 hover:bg-green-50">
-                  <span className="w-12 flex-none font-mono leading-tight">
-                    <span className="block text-[22px] font-semibold text-green-800">{p.day}</span>
-                    <span className="block text-[12px] text-muted">{p.month}</span>
+                <Link href={`/b/${d.id}`} className="group flex gap-3 rounded-xl p-2.5 transition-colors duration-200 hover:bg-white/5">
+                  <span
+                    className={`grid w-12 flex-none place-items-center rounded-xl border py-1 font-mono leading-tight ${
+                      left <= 3 ? "border-warn/30 bg-warn/10" : "border-line bg-white/5"
+                    }`}
+                  >
+                    <span className={`block text-[20px] font-semibold ${left <= 3 ? "text-warn" : "text-brand-300"}`}>{p.day}</span>
+                    <span className="block text-[11px] text-muted">{p.month}</span>
                   </span>
-                  <span className="line-clamp-2 text-[14px] text-ink">{d.title}</span>
+                  <span className="line-clamp-2 self-center text-[14px] text-ink-2 transition-colors group-hover:text-ink">{d.title}</span>
                 </Link>
               </li>
             );
           })}
         </ul>
       ) : (
-        <p className="rounded-lg border border-line bg-surface p-3 text-[14px] text-ink-2">Belum ada tenggat yang akan datang.</p>
+        <p className="p-3 text-[14px] text-ink-2">Belum ada tenggat yang akan datang.</p>
       )}
     </aside>
   );

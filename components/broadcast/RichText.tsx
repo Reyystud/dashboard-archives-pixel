@@ -13,7 +13,7 @@ function link(raw: string, key: string): ReactNode {
   if (!safe) return raw;
   return (
     <span key={key}>
-      <a href={url} target="_blank" rel="noopener noreferrer" className="break-all text-green-700 underline underline-offset-2">
+      <a href={url} target="_blank" rel="noopener noreferrer" className="break-all text-brand-400 underline underline-offset-2">
         {url}
       </a>
       {tail}

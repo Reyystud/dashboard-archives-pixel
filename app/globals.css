@@ -1,43 +1,55 @@
 @import "tailwindcss";
 
+/* PIXEL'25 — dark navy + biru logo + krem ring. Permukaan = kaca di atas latar navy. */
 @theme {
-  --color-bg: #F7F8F5;
-  --color-surface: #FFFFFF;
-  --color-ink: #0F2318;
-  --color-ink-2: #3D5246;
-  --color-muted: #6B7C72;
-  --color-line: #E2E8E3;
-  --color-line-strong: #CBD6CE;
+  --color-bg: #05070F;
+  --color-bg-2: #0A1230;
+  --color-surface: rgba(255, 255, 255, 0.045);
+  --color-surface-2: rgba(255, 255, 255, 0.08);
+  --color-surface-solid: #0D1430;
+  --color-ink: #EAF0FF;
+  --color-ink-2: #B4C0DA;
+  --color-muted: #8390AE;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-strong: rgba(255, 255, 255, 0.16);
 
-  --color-green-950: #0A2A1B;
-  --color-green-800: #0F4D30;
-  --color-green-700: #136A40;
-  --color-green-600: #198754;
-  --color-green-500: #22A866;
-  --color-green-100: #E2F3E8;
-  --color-green-50: #F1F9F4;
+  --color-brand-950: #0B214A;
+  --color-brand-900: #133A80;
+  --color-brand-800: #1A4BA3;
+  --color-brand-700: #205BC2;
+  --color-brand-600: #3368DA;
+  --color-brand-500: #4C7FF0;
+  --color-brand-400: #7BA3FF;
+  --color-brand-300: #9DBAFF;
+  --color-brand-200: #C3D5FF;
+  --color-brand-100: rgba(32, 91, 194, 0.28);
+  --color-brand-50: rgba(32, 91, 194, 0.14);
 
   --color-sand: #E8DCCB;
   --color-sand-2: #C9BBA7;
-  --color-sand-ink: #6E604E;
+  --color-sand-ink: #D9CBB5;
 
-  --color-danger: #B42318;
-  --color-danger-bg: #FDECEA;
-  --color-warn: #9A6700;
+  --color-danger: #FCA5A5;
+  --color-danger-strong: #DC2626;
+  --color-danger-bg: rgba(248, 113, 113, 0.12);
+  --color-warn: #FCD34D;
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-space-grotesk), var(--font-geist-sans), ui-sans-serif, sans-serif;
 
-  --shadow-card: 0 1px 2px rgba(15, 35, 24, 0.06);
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 12px 32px -16px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 0 1px rgba(76, 127, 240, 0.35), 0 10px 40px -10px rgba(32, 91, 194, 0.55);
 }
 
 html {
   background: var(--color-bg);
   color: var(--color-ink);
+  color-scheme: dark;
   font-variant-numeric: tabular-nums;
   -webkit-text-size-adjust: 100%;
 }
@@ -46,15 +58,92 @@ body {
   font-size: 15px;
   line-height: 1.6;
   min-height: 100dvh;
+  background: var(--color-bg);
+  overflow-x: hidden;
 }
 @media (min-width: 768px) {
   body { font-size: 16px; }
 }
+h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0.01em; }
+
+::selection { background: rgba(76, 127, 240, 0.45); color: #fff; }
 
 :focus-visible {
-  outline: 2px solid var(--color-green-500);
-  outline-offset: 1px;
+  outline: 2px solid var(--color-brand-400);
+  outline-offset: 2px;
 }
+
+/* Latar: blob biru + grid pixel halus, tetap di belakang semua konten */
+.backdrop-scene {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(60vw 50vh at 85% -10%, rgba(32, 91, 194, 0.35), transparent 60%),
+    radial-gradient(50vw 45vh at -10% 30%, rgba(51, 104, 218, 0.22), transparent 60%),
+    radial-gradient(45vw 40vh at 60% 110%, rgba(232, 220, 203, 0.10), transparent 60%),
+    linear-gradient(180deg, var(--color-bg-2) 0%, var(--color-bg) 55%);
+}
+.backdrop-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 50% 0%, black 20%, transparent 75%);
+}
+.backdrop-scene .blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.55;
+  animation: drift 22s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(6vw, 4vh, 0) scale(1.15); }
+}
+
+/* Kaca */
+.glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-card);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+}
+.glass-strong {
+  background: linear-gradient(180deg, rgba(20, 30, 66, 0.82), rgba(10, 16, 40, 0.78));
+  border: 1px solid var(--color-line-strong);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 24px 60px -20px rgba(0, 0, 0, 0.75);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
+}
+.glow-blue { box-shadow: var(--shadow-glow); }
+.text-gradient {
+  background: linear-gradient(100deg, #FFFFFF 0%, var(--color-brand-300) 45%, var(--color-sand) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Kilau tipis yang mengikuti kursor pada kartu (diset oleh TiltCard via --mx/--my) */
+.sheen { position: relative; isolation: isolate; }
+.sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 0%), rgba(123, 163, 255, 0.12), transparent 45%);
+  opacity: 0;
+  transition: opacity 250ms ease;
+  z-index: -1;
+}
+.sheen:hover::after { opacity: 1; }
 
 /* Titik bercincin (dari logo) */
 .ring-dot {
@@ -62,20 +151,27 @@ body {
   width: 10px;
   height: 10px;
   border-radius: 9999px;
-  background: var(--color-green-950);
-  box-shadow: 0 0 0 3px var(--color-sand);
+  background: var(--color-bg);
+  box-shadow: 0 0 0 3px var(--color-sand), 0 0 12px 2px rgba(232, 220, 203, 0.35);
   flex: none;
 }
+.ring-dot.live { animation: live 1.8s ease-in-out infinite; }
+@keyframes live { 50% { box-shadow: 0 0 0 3px var(--color-sand), 0 0 18px 6px rgba(232, 220, 203, 0.15); } }
 
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
-@keyframes skeleton { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
-.skeleton { background: var(--color-line); border-radius: var(--radius-md); animation: skeleton 1.4s ease-in-out infinite; }
+@keyframes skeleton { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.10) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  border-radius: var(--radius-sm);
+  animation: skeleton 1.6s linear infinite;
+}
 
 /* Word cloud */
 @keyframes word-in { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-@keyframes word-flash { 0% { background-color: var(--color-sand); } 100% { background-color: transparent; } }
+@keyframes word-flash { 0% { background-color: rgba(232, 220, 203, 0.3); } 100% { background-color: transparent; } }
 .cloud-word {
   transition: font-size 300ms ease-out, color 150ms;
   animation: word-in 300ms ease-out both;
@@ -84,6 +180,17 @@ body {
   line-height: 1.25;
 }
 .cloud-word[data-flash="true"] { animation: word-in 300ms ease-out both, word-flash 600ms ease-out; }
+
+/* cmdk */
+[cmdk-item][data-selected="true"] { background: var(--color-brand-50); color: var(--color-ink); }
+[cmdk-group-heading] {
+  padding: 10px 12px 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -95,3 +202,11 @@ body {
 
 :root { --cloud-max: 40px; }
 @media (min-width: 768px) { :root { --cloud-max: 56px; } }
+
+html[data-intro="done"] .intro-loader { display: none; }
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop-in { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+/* Pengaman: bila JS gagal dimuat, overlay intro tetap hilang sendiri. */
+.intro-loader { animation: intro-failsafe 0s linear 6s forwards; }
+@keyframes intro-failsafe { to { visibility: hidden; pointer-events: none; } }
