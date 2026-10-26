@@ -184,6 +184,7 @@ Di `lib/categories.ts`; versi terang supaya terbaca di latar gelap.
 - Logo 3D hanya di desktop (`canRun3D` di `components/home/Logo3DSlot.tsx`); HP mendapat SVG beranimasi CSS dan tidak mengunduh three.js. Material tanpa `transmission`, tanpa ContactShadows, `PerformanceMonitor` menurunkan DPR otomatis.
 - Palette Cmd+K di-lazy-load (`CommandPaletteLoader`); pemicunya ada di `lib/client/palette.ts` agar cmdk tidak masuk bundle awal.
 - Query publik di-cache 60 dtk (`unstable_cache` di `lib/queries.ts`, tag `broadcasts`/`moments`); `app/admin/actions.ts` memanggil `revalidateTag(..., { expire: 0 })` agar perubahan admin langsung terlihat. Pencarian teks (`q`) tidak di-cache.
+- Kategori & pencarian di beranda dikelola `components/broadcast/FeedBrowser.tsx` (klien): tanpa navigasi halaman, status aktif langsung berpindah, hasil di-cache di klien 60 dtk, di-prefetch saat hover/sentuh dan untuk 3 kategori terbanyak saat idle, URL lewat `history.replaceState`. Data dari `GET /api/feed` (cache CDN 60 dtk). Jangan mengembalikan ke `<Link>` navigasi penuh: itu memicu `loading.tsx` dan me-mount ulang hero + canvas 3D.
 - Gambar broadcast/momen lewat `next/image`; foto momen diperkecil di browser (maks 2400px, WebP) sebelum diunggah.
 
 ### 4.8 Fitur angkatan

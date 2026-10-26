@@ -14,7 +14,23 @@ function href(cat: string | undefined, q?: string) {
   return s ? `/?${s}#arsip` : "/#arsip";
 }
 
-export function CategoryChips({ active, q, counts }: { active?: string; q?: string; counts: Record<string, number> }) {
+type Handlers = { onSelect: (cat?: string) => void; onIntent?: (cat?: string) => void };
+
+// Klik biasa dicegat (ganti kategori di klien); klik tengah / Ctrl / Cmd tetap membuka tautan normal.
+function nav(h: Handlers, key?: string) {
+  return {
+    onClick: (e: React.MouseEvent) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+      e.preventDefault();
+      h.onSelect(key);
+    },
+    onPointerEnter: () => h.onIntent?.(key),
+    onTouchStart: () => h.onIntent?.(key),
+    onFocus: () => h.onIntent?.(key),
+  };
+}
+
+export function CategoryChips({ active, q, counts, ...h }: { active?: string; q?: string; counts: Record<string, number> } & Handlers) {
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
   const chip = (key: string | undefined, label: string, color: string | null, n: number) => {
     const on = active === key;
@@ -22,6 +38,7 @@ export function CategoryChips({ active, q, counts }: { active?: string; q?: stri
       <Link
         key={key ?? "all"}
         href={href(key, q)}
+        {...nav(h, key)}
         aria-current={on ? "true" : undefined}
         className={cn(
           "relative flex min-h-10 flex-none items-center gap-2 rounded-full border px-3.5 text-[14px] whitespace-nowrap transition-colors duration-200",
@@ -49,7 +66,7 @@ export function CategoryChips({ active, q, counts }: { active?: string; q?: stri
   );
 }
 
-export function CategorySidebar({ active, q, counts }: { active?: string; q?: string; counts: Record<string, number> }) {
+export function CategorySidebar({ active, q, counts, ...h }: { active?: string; q?: string; counts: Record<string, number> } & Handlers) {
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
   const item = (key: string | undefined, label: string, color: string | null, n: number) => {
     const on = active === key;
@@ -57,6 +74,7 @@ export function CategorySidebar({ active, q, counts }: { active?: string; q?: st
       <Link
         key={key ?? "all"}
         href={href(key, q)}
+        {...nav(h, key)}
         aria-current={on ? "true" : undefined}
         className={cn(
           "relative flex min-h-10 items-center gap-2.5 rounded-xl px-3 text-[14px] transition-colors duration-200",

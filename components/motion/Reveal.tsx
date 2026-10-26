@@ -27,7 +27,7 @@ export function Reveal({
 export function StaggerItem({ children, index, className }: { children: React.ReactNode; index: number; className?: string }) {
   // CSS murni (class .rise): tanpa instance motion per kartu, dan kartu di luar layar dilewati (.cv-auto).
   return (
-    <div className={`rise cv-auto ${className ?? ""}`} style={{ animationDelay: `${Math.min(index % 20, 8) * 50}ms` }}>
+    <div className={`rise cv-auto ${className ?? ""}`} style={{ animationDelay: `${Math.min(index, 6) * 25}ms` }}>
       {children}
     </div>
   );
