@@ -1,11 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Images, X } from "lucide-react";
 import { formatShortDate } from "@/lib/format";
 import { cn } from "@/lib/cn";
 import type { Moment } from "@/lib/queries";
+
+const MotionImage = motion.create(Image);
 
 export function MomentGallery({ moments }: { moments: Moment[] }) {
   const years = [...new Set(moments.map((m) => m.taken_on.slice(0, 4)))];
@@ -82,15 +85,15 @@ export function MomentGallery({ moments }: { moments: Moment[] }) {
                 className="group glass relative block w-full cursor-zoom-in overflow-hidden rounded-[20px] p-1.5 text-left"
                 aria-label={`Lihat ${m.title}`}
               >
-                <motion.img
+                <MotionImage
                   layoutId={`m-${m.id}`}
                   src={m.image_url}
                   alt={m.title}
-                  loading="lazy"
-                  width={m.width ?? undefined}
-                  height={m.height ?? undefined}
-                  className="w-full rounded-[15px] object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  style={m.width && m.height ? { aspectRatio: `${m.width}/${m.height}` } : undefined}
+                  width={m.width ?? 800}
+                  height={m.height ?? 600}
+                  sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  quality={70}
+                  className="h-auto w-full rounded-[15px] object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 />
                 <span className="pointer-events-none absolute inset-x-1.5 bottom-1.5 rounded-b-[15px] bg-gradient-to-t from-black/80 to-transparent px-3 pb-2.5 pt-8 opacity-0 transition-opacity duration-300 group-hover:opacity-100 max-md:opacity-100">
                   <span className="block truncate text-[14px] font-semibold text-white">{m.title}</span>
@@ -106,7 +109,7 @@ export function MomentGallery({ moments }: { moments: Moment[] }) {
         {open ? (
           <motion.div
             key="lightbox"
-            className="fixed inset-0 z-[80] flex flex-col items-center justify-center bg-black/85 p-4 backdrop-blur-md"
+            className="fixed inset-0 z-[80] flex flex-col items-center justify-center bg-black/90 p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -130,11 +133,16 @@ export function MomentGallery({ moments }: { moments: Moment[] }) {
                 <NavBtn side="right" onClick={() => setOpenId(shown[(idx + 1) % shown.length].id)} />
               </>
             ) : null}
-            <motion.img
+            <MotionImage
               layoutId={`m-${open.id}`}
               src={open.image_url}
               alt={open.title}
-              className="max-h-[78vh] max-w-full rounded-[18px] object-contain shadow-2xl"
+              width={open.width ?? 1600}
+              height={open.height ?? 1200}
+              sizes="100vw"
+              quality={80}
+              priority
+              className="h-auto max-h-[78vh] w-auto max-w-full rounded-[18px] object-contain shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             />
             <motion.div

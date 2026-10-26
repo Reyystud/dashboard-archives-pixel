@@ -32,8 +32,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <div className="backdrop-scene" aria-hidden>
-          <span className="blob" style={{ width: "38vw", height: "38vw", left: "-8vw", top: "40vh", background: "#1A4BA3" }} />
-          <span className="blob" style={{ width: "30vw", height: "30vw", right: "-6vw", top: "-6vw", background: "#205BC2", animationDelay: "-8s" }} />
+          <span className="blob" style={{ width: "38vw", height: "38vw", left: "-8vw", top: "40vh", "--blob": "#1A4BA3" } as React.CSSProperties} />
+          <span className="blob" style={{ width: "30vw", height: "30vw", right: "-6vw", top: "-6vw", "--blob": "#205BC2", animationDelay: "-8s" } as React.CSSProperties} />
         </div>
         <Providers>
           <ToastProvider>{children}</ToastProvider>

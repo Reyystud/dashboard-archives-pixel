@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CalendarClock, Pin } from "lucide-react";
 import { CategoryTag } from "./CategoryTag";
@@ -40,11 +41,13 @@ export function BroadcastCard({ b }: { b: Broadcast }) {
             <p className="mt-1.5 whitespace-pre-line text-[15px] text-ink-2 line-clamp-3">{b.body}</p>
           </div>
           {image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={image.url}
               alt=""
-              loading="lazy"
+              width={76}
+              height={76}
+              sizes="76px"
+              quality={60}
               className="size-[76px] flex-none rounded-[14px] border border-line object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : null}

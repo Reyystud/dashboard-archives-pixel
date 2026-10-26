@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireAdmin } from "@/lib/auth";
@@ -10,6 +10,7 @@ import { CATEGORY_KEYS } from "@/lib/categories";
 import { classifyAndUpdate } from "@/lib/classify";
 import { extractLinks } from "@/lib/telegram/parse";
 import { contentHash } from "@/lib/hash";
+import { TAG_BROADCASTS, TAG_MOMENTS } from "@/lib/queries";
 
 export type Result = { ok: true } | { ok: false; error: string };
 
@@ -22,6 +23,7 @@ const fail = (e: unknown): Result => {
 };
 
 function revalidateBroadcasts(ids: string[] = []) {
+  revalidateTag(TAG_BROADCASTS, { expire: 0 });
   revalidatePath("/");
   revalidatePath("/admin/broadcasts");
   for (const id of ids) {
@@ -304,6 +306,7 @@ export type MomentInputT = z.infer<typeof MomentInput>;
 const MOMENT_MIME = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/avif": "avif" } as const;
 
 function revalidateMoments() {
+  revalidateTag(TAG_MOMENTS, { expire: 0 });
   revalidatePath("/momen");
   revalidatePath("/admin/momen");
 }

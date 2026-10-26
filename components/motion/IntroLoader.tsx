@@ -8,7 +8,7 @@ import { INTRO_KEY } from "@/lib/brand/intro";
 
 const ORDER = ["l1", "l2", "l3", "t", "x", "i", "e", "l"];
 const WORD = "PIXEL'25".split("");
-const HOLD_MS = 1900;
+const HOLD_MS = 1500;
 
 /** Overlay pembuka: tile logo tersusun satu per satu, ring mengunci, lalu panel naik keluar. */
 const noop = () => () => {};
@@ -46,7 +46,7 @@ export function IntroLoader() {
           aria-hidden
           className="intro-loader fixed inset-0 z-[100] grid cursor-pointer place-items-center overflow-hidden bg-bg"
           onClick={() => setPlaying(false)}
-          exit={{ clipPath: "inset(0 0 100% 0)", transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] } }}
+          exit={{ clipPath: "inset(0 0 100% 0)", transition: { duration: 0.55, ease: [0.76, 0, 0.24, 1] } }}
           initial={{ clipPath: "inset(0 0 0% 0)" }}
         >
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_40%_at_50%_45%,rgba(32,91,194,0.35),transparent_70%)]" />
@@ -63,7 +63,7 @@ export function IntroLoader() {
                     style={{ transformBox: "fill-box", transformOrigin: "center" }}
                     initial={{ opacity: 0, scale: 0.3, y: i % 2 ? 120 : -120, rotate: i % 2 ? 12 : -12 }}
                     animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
-                    transition={{ type: "spring", stiffness: 220, damping: 18, delay: 0.08 + i * 0.07 }}
+                    transition={{ type: "spring", stiffness: 220, damping: 18, delay: 0.05 + i * 0.05 }}
                   />
                 );
               })}
@@ -75,7 +75,7 @@ export function IntroLoader() {
                 style={{ transformBox: "fill-box", transformOrigin: "center" }}
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: [0, 1.35, 1], rotate: 0 }}
-                transition={{ duration: 0.7, delay: 0.75, ease: "easeOut" }}
+                transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
               />
               <motion.circle
                 cx={PIXEL_RING.cx}
@@ -85,7 +85,7 @@ export function IntroLoader() {
                 style={{ transformBox: "fill-box", transformOrigin: "center" }}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ duration: 0.4, delay: 0.95 }}
+                transition={{ duration: 0.35, delay: 0.7 }}
               />
             </svg>
 
@@ -95,7 +95,7 @@ export function IntroLoader() {
                   key={i}
                   initial={{ y: "110%" }}
                   animate={{ y: 0 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 24, delay: 0.9 + i * 0.04 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 24, delay: 0.65 + i * 0.035 }}
                 >
                   {c}
                 </motion.span>
@@ -105,7 +105,7 @@ export function IntroLoader() {
               className="mt-2 font-mono text-[12px] uppercase tracking-[0.3em] text-muted"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1.25 }}
+              transition={{ delay: 0.95 }}
             >
               HMIF ITB
             </motion.p>

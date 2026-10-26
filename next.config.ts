@@ -19,7 +19,11 @@ const csp = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  images: { remotePatterns: [{ protocol: "https", hostname: supabaseHost }] },
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: supabaseHost }],
+    // Hasil resize disimpan 30 hari (nama file broadcast tidak berubah) -> jauh lebih sedikit transformasi di Vercel.
+    minimumCacheTTL: 60 * 60 * 24 * 30,
+  },
   async headers() {
     return [
       {

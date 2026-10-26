@@ -96,12 +96,15 @@ h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse at 50% 0%, black 20%, transparent 75%);
 }
+/* Blob memakai radial-gradient (bukan filter: blur) supaya tidak perlu layer blur besar di GPU HP. */
 .backdrop-scene .blob {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(80px);
-  opacity: 0.55;
-  animation: drift 22s ease-in-out infinite alternate;
+  background: radial-gradient(closest-side, var(--blob, #205BC2), transparent 100%);
+  opacity: 0.5;
+}
+@media (min-width: 1024px) and (hover: hover) {
+  .backdrop-scene .blob { will-change: transform; animation: drift 22s ease-in-out infinite alternate; }
 }
 @keyframes drift {
   from { transform: translate3d(0, 0, 0) scale(1); }
@@ -109,19 +112,31 @@ h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0
 }
 
 /* Kaca */
+/* backdrop-filter sangat mahal di GPU HP (satu layer blur per kartu). Di HP: latar semi-solid bernuansa sama;
+   blur asli hanya untuk layar lebar + pointer halus. */
 .glass {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
+  background: linear-gradient(180deg, rgba(24, 34, 72, 0.62), rgba(12, 18, 42, 0.62));
   border: 1px solid var(--color-line);
   box-shadow: var(--shadow-card);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
 }
 .glass-strong {
-  background: linear-gradient(180deg, rgba(20, 30, 66, 0.82), rgba(10, 16, 40, 0.78));
+  background: linear-gradient(180deg, rgba(20, 30, 66, 0.96), rgba(10, 16, 40, 0.95));
   border: 1px solid var(--color-line-strong);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 24px 60px -20px rgba(0, 0, 0, 0.75);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  backdrop-filter: blur(24px) saturate(160%);
+}
+@media (min-width: 1024px) and (hover: hover) {
+  .glass {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(140%);
+  }
+}
+@media (min-width: 768px) {
+  .glass-strong {
+    background: linear-gradient(180deg, rgba(20, 30, 66, 0.82), rgba(10, 16, 40, 0.78));
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    backdrop-filter: blur(24px) saturate(160%);
+  }
 }
 .glow-blue { box-shadow: var(--shadow-glow); }
 .text-gradient {
@@ -155,8 +170,16 @@ h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0
   box-shadow: 0 0 0 3px var(--color-sand), 0 0 12px 2px rgba(232, 220, 203, 0.35);
   flex: none;
 }
-.ring-dot.live { animation: live 1.8s ease-in-out infinite; }
-@keyframes live { 50% { box-shadow: 0 0 0 3px var(--color-sand), 0 0 18px 6px rgba(232, 220, 203, 0.15); } }
+.ring-dot.live { position: relative; }
+.ring-dot.live::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  box-shadow: 0 0 14px 4px rgba(232, 220, 203, 0.4);
+  animation: live 1.8s ease-in-out infinite;
+}
+@keyframes live { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
 
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -210,3 +233,14 @@ html[data-intro="done"] .intro-loader { display: none; }
 /* Pengaman: bila JS gagal dimuat, overlay intro tetap hilang sendiri. */
 .intro-loader { animation: intro-failsafe 0s linear 6s forwards; }
 @keyframes intro-failsafe { to { visibility: hidden; pointer-events: none; } }
+
+/* Masuk berurutan lewat CSS (tanpa JS per kartu). Delay lewat style="animation-delay". */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.rise { animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* Lewati render kartu di luar layar (feed panjang). */
+.cv-auto { content-visibility: auto; contain-intrinsic-size: auto 190px; }
+
+/* Logo SVG pengganti 3D di HP: gerak halus lewat transform (compositor). */
+@keyframes logo-float { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
+.logo-float { animation: logo-float 6s ease-in-out infinite; will-change: transform; }

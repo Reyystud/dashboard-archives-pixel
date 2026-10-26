@@ -46,7 +46,7 @@ export default async function Home({ searchParams }: Props) {
             <Suspense>
               <SearchBar />
             </Suspense>
-            <div className="sticky top-[76px] z-20 -mx-4 mb-1 bg-bg/70 px-4 backdrop-blur-xl lg:hidden">
+            <div className="sticky top-[76px] z-20 -mx-4 mb-1 bg-bg/95 px-4 lg:hidden">
               <CategoryChips active={cat} q={q} counts={counts} />
             </div>
             <div className="mt-2">

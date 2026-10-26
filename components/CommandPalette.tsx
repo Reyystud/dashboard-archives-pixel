@@ -6,9 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { Bookmark, CalendarDays, CornerDownLeft, FileText, Images, Inbox, Loader2, MessagesSquare, Search, Tag } from "lucide-react";
 import { CATEGORIES, categoryOf } from "@/lib/categories";
 import { formatDeadline } from "@/lib/format";
+import { PALETTE_EVENT } from "@/lib/client/palette";
 
-const OPEN_EVENT = "pixel:cmdk";
-export const openCommandPalette = () => window.dispatchEvent(new Event(OPEN_EVENT));
 
 type Result = {
   broadcasts: { id: string; title: string; category: string; deadline: string | null }[];
@@ -26,9 +25,9 @@ const PAGES = [
 const EMPTY: Result = { broadcasts: [], pojok: [] };
 const match = (text: string, q: string) => !q || text.toLowerCase().includes(q.toLowerCase());
 
-export function CommandPalette() {
+export default function CommandPalette({ defaultOpen = false }: { defaultOpen?: boolean }) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const [q, setQ] = useState("");
   const [res, setRes] = useState<Result>({ broadcasts: [], pojok: [] });
   const [loading, setLoading] = useState(false);
@@ -44,10 +43,10 @@ export function CommandPalette() {
     };
     const onOpen = () => setOpen(true);
     window.addEventListener("keydown", onKey);
-    window.addEventListener(OPEN_EVENT, onOpen);
+    window.addEventListener(PALETTE_EVENT, onOpen);
     return () => {
       window.removeEventListener("keydown", onKey);
-      window.removeEventListener(OPEN_EVENT, onOpen);
+      window.removeEventListener(PALETTE_EVENT, onOpen);
     };
   }, []);
 
@@ -88,7 +87,7 @@ export function CommandPalette() {
       onOpenChange={setOpen}
       label="Pencarian cepat"
       shouldFilter={false}
-      overlayClassName="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm animate-[fade-in_150ms_ease-out]"
+      overlayClassName="fixed inset-0 z-[70] bg-black/70 animate-[fade-in_150ms_ease-out]"
       contentClassName="glass-strong fixed left-1/2 top-[12vh] z-[71] w-[calc(100vw-24px)] max-w-xl -translate-x-1/2 overflow-hidden rounded-[22px] animate-[pop-in_220ms_cubic-bezier(0.22,1,0.36,1)]"
     >
       <div className="flex items-center gap-3 border-b border-line px-4">

@@ -1,8 +1,17 @@
+import { unstable_cache } from "next/cache";
 import { supabasePublic } from "@/lib/supabase/public";
 import { CATEGORY_KEYS } from "@/lib/categories";
 import type { Broadcast, CloudEntry, FeedParams, Pojok } from "@/lib/types";
 
 export const PAGE_SIZE = 20;
+
+// Halaman publik dirender dinamis (searchParams), jadi tanpa cache setiap kunjungan memukul Supabase 4-5 kali.
+// Data broadcast/momen di-cache 60 dtk dan dibatalkan langsung saat admin mengubah (revalidateTag di app/admin/actions.ts).
+const TTL = 60;
+export const TAG_BROADCASTS = "broadcasts";
+export const TAG_MOMENTS = "moments";
+const cached = <A extends unknown[], R>(name: string, fn: (...a: A) => Promise<R>, tag: string) =>
+  unstable_cache(fn, [name], { revalidate: TTL, tags: [tag] });
 
 export type FeedPage = { items: Broadcast[]; nextCursor: string | null };
 
@@ -20,7 +29,7 @@ export function parseCursor(cursor?: string): { ts: string; id: string } | null 
   return { ts, id };
 }
 
-export async function listBroadcasts(params: FeedParams, cursor?: string): Promise<FeedPage> {
+async function listBroadcastsRaw(params: FeedParams, cursor?: string): Promise<FeedPage> {
   const sb = supabasePublic();
   const cat = validCat(params.cat);
   const q = params.q?.trim().slice(0, 100);
@@ -57,14 +66,14 @@ export async function listBroadcasts(params: FeedParams, cursor?: string): Promi
   return { items: rows, nextCursor: hasMore && last ? `${last.received_at}_${last.id}` : null };
 }
 
-export async function categoryCounts(): Promise<Record<string, number>> {
+async function categoryCountsRaw(): Promise<Record<string, number>> {
   const { data } = await supabasePublic().from("broadcasts").select("category").eq("status", "published").limit(10000);
   const out: Record<string, number> = {};
   for (const r of data ?? []) out[r.category] = (out[r.category] ?? 0) + 1;
   return out;
 }
 
-export async function upcomingDeadlines(today: string): Promise<Pick<Broadcast, "id" | "title" | "deadline">[]> {
+async function upcomingDeadlinesRaw(today: string): Promise<Pick<Broadcast, "id" | "title" | "deadline">[]> {
   const { data } = await supabasePublic()
     .from("broadcasts")
     .select("id,title,deadline")
@@ -75,7 +84,7 @@ export async function upcomingDeadlines(today: string): Promise<Pick<Broadcast, 
   return (data ?? []) as Pick<Broadcast, "id" | "title" | "deadline">[];
 }
 
-export async function getBroadcast(id: string): Promise<Broadcast | null> {
+async function getBroadcastRaw(id: string): Promise<Broadcast | null> {
   if (!/^[0-9a-f-]{36}$/.test(id)) return null;
   const { data } = await supabasePublic().from("broadcasts").select("*").eq("id", id).eq("status", "published").maybeSingle();
   return (data as Broadcast | null) ?? null;
@@ -133,7 +142,7 @@ export async function listAspirations(
 
 export type HomeStats = { total: number; dueThisWeek: number; openPojok: number };
 
-export async function homeStats(today: string, weekEnd: string): Promise<HomeStats> {
+async function homeStatsRaw(today: string, weekEnd: string): Promise<HomeStats> {
   const sb = supabasePublic();
   const [total, due, pojok] = await Promise.all([
     sb.from("broadcasts").select("id", { count: "exact", head: true }).eq("status", "published"),
@@ -146,7 +155,7 @@ export async function homeStats(today: string, weekEnd: string): Promise<HomeSta
 export type DeadlineItem = Pick<Broadcast, "id" | "title" | "deadline" | "category" | "body">;
 
 /** Broadcast bertenggat dalam rentang [from, to] (inklusif, "YYYY-MM-DD"). */
-export async function deadlinesInRange(from: string, to: string): Promise<DeadlineItem[]> {
+async function deadlinesInRangeRaw(from: string, to: string): Promise<DeadlineItem[]> {
   const { data } = await supabasePublic()
     .from("broadcasts")
     .select("id,title,deadline,category,body")
@@ -180,7 +189,7 @@ export type Moment = {
   created_at: string;
 };
 
-export async function listMoments(): Promise<Moment[]> {
+async function listMomentsRaw(): Promise<Moment[]> {
   const { data, error } = await supabasePublic()
     .from("moments")
     .select("*")
@@ -191,3 +200,15 @@ export async function listMoments(): Promise<Moment[]> {
   if (error) return [];
   return (data ?? []) as Moment[];
 }
+
+// ---- Versi ter-cache (yang dipakai halaman) ----
+const listBroadcastsCached = cached("listBroadcasts", listBroadcastsRaw, TAG_BROADCASTS);
+/** Pencarian teks (q) tidak di-cache supaya cache tidak membengkak oleh kata kunci acak. */
+export const listBroadcasts = (params: FeedParams, cursor?: string): Promise<FeedPage> =>
+  params.q?.trim() ? listBroadcastsRaw(params, cursor) : listBroadcastsCached(params, cursor);
+export const categoryCounts = cached("categoryCounts", categoryCountsRaw, TAG_BROADCASTS);
+export const upcomingDeadlines = cached("upcomingDeadlines", upcomingDeadlinesRaw, TAG_BROADCASTS);
+export const getBroadcast = cached("getBroadcast", getBroadcastRaw, TAG_BROADCASTS);
+export const homeStats = cached("homeStats", homeStatsRaw, TAG_BROADCASTS);
+export const deadlinesInRange = cached("deadlinesInRange", deadlinesInRangeRaw, TAG_BROADCASTS);
+export const listMoments = cached("listMoments", listMomentsRaw, TAG_MOMENTS);

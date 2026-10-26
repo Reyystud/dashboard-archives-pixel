@@ -1,6 +1,6 @@
 "use client";
 
-import { openCommandPalette } from "@/components/CommandPalette";
+import { openCommandPalette } from "@/lib/client/palette";
 import { buttonClass } from "@/components/ui/Button";
 import type { HomeStats } from "@/lib/queries";
 import { ArrowDown, CalendarDays, Command } from "lucide-react";
@@ -26,7 +26,7 @@ export function Hero({ stats }: { stats: HomeStats }) {
       <div className="relative order-2 min-w-0 md:order-1">
         <motion.p
           {...up(0.1)}
-          className="inline-flex items-center gap-2 rounded-full border border-line bg-white/5 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-2 backdrop-blur-md"
+          className="inline-flex items-center gap-2 rounded-full border border-line bg-white/5 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-2"
         >
           <span className="ring-dot live" style={{ width: 7, height: 7 }} aria-hidden />
           HMIF ITB · Angkatan 2025
@@ -73,7 +73,7 @@ export function Hero({ stats }: { stats: HomeStats }) {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1, ease: EASE, delay: 0.1 }}
       >
-        <div className="pointer-events-none absolute inset-[12%] rounded-full bg-brand-700/30 blur-[90px]" aria-hidden />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(closest-side,rgba(32,91,194,0.34),transparent)]" aria-hidden />
         <Logo3DSlot />
       </motion.div>
     </section>

@@ -15,7 +15,7 @@ const ITEMS = [
 export function AdminSidebar() {
   const path = usePathname();
   return (
-    <aside className="sticky top-0 hidden h-dvh w-[220px] flex-none flex-col border-r border-line bg-surface-solid/70 p-3 backdrop-blur-xl md:flex">
+    <aside className="sticky top-0 hidden h-dvh w-[220px] flex-none flex-col border-r border-line bg-surface-solid/70 p-3 md:flex">
       <p className="px-3 py-3 font-display text-[15px] font-semibold">PIXEL<span className="text-sand">&apos;25</span> · Admin</p>
       <nav className="flex flex-col gap-1">
         {ITEMS.map((i) => (
@@ -46,7 +46,7 @@ export function AdminSidebar() {
 export function AdminBottomNav() {
   const path = usePathname();
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 flex h-14 border-t border-line bg-surface-solid/90 backdrop-blur-xl md:hidden" aria-label="Admin">
+    <nav className="fixed inset-x-0 bottom-0 z-30 flex h-14 border-t border-line bg-surface-solid/90 md:hidden" aria-label="Admin">
       {ITEMS.map((i) => (
         <Link
           key={i.href}

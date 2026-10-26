@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { Bookmark, CalendarDays, Images, Inbox, MessagesSquare, Search } from "lucide-react";
-import { openCommandPalette } from "@/components/CommandPalette";
+import { openCommandPalette } from "@/lib/client/palette";
 import { useSaved } from "@/lib/client/saved";
 import { cn } from "@/lib/cn";
 

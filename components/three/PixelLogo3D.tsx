@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, Lightformer, ContactShadows } from "@react-three/drei";
+import { Environment, Lightformer, PerformanceMonitor } from "@react-three/drei";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
@@ -25,8 +25,8 @@ function buildParts(): Part[] {
       bevelEnabled: true,
       bevelThickness: 14,
       bevelSize: 10,
-      bevelSegments: 4,
-      curveSegments: 10,
+      bevelSegments: 2,
+      curveSegments: 6,
     });
     geometry.translate(0, 0, -DEPTH / 2);
     geometry.computeBoundingBox();
@@ -39,16 +39,8 @@ function buildParts(): Part[] {
 function material(fill: PixelFill) {
   if (fill === "glass")
     return (
-      <meshPhysicalMaterial
-        color="#7FA2DD"
-        transmission={0.85}
-        thickness={1.2}
-        roughness={0.12}
-        ior={1.4}
-        clearcoat={1}
-        attenuationColor="#205BC2"
-        attenuationDistance={1.2}
-      />
+      // Tanpa `transmission`: itu memaksa render ulang seluruh scene ke render target (satu pass ekstra per frame).
+      <meshPhysicalMaterial color="#7FA2DD" transparent opacity={0.9} roughness={0.14} metalness={0.05} clearcoat={1} />
     );
   if (fill === "sand") return <meshPhysicalMaterial color="#E8DCCB" metalness={0.65} roughness={0.28} clearcoat={0.6} />;
   return <meshPhysicalMaterial color="#205BC2" metalness={0.15} roughness={0.22} clearcoat={1} clearcoatRoughness={0.15} />;
@@ -122,6 +114,7 @@ export default function PixelLogo3D() {
   const wrap = useRef<HTMLDivElement>(null);
   const scroll = useRef(0);
   const [visible, setVisible] = useState(true);
+  const [dpr, setDpr] = useState(1.5);
 
   useEffect(() => {
     const el = wrap.current;
@@ -140,19 +133,20 @@ export default function PixelLogo3D() {
   return (
     <div ref={wrap} className="h-full w-full">
       <Canvas
-        dpr={[1, 1.75]}
+        dpr={dpr}
         camera={{ position: [0, 0, 7.5], fov: 35 }}
         frameloop={visible ? "always" : "never"}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        gl={{ antialias: true, alpha: true, powerPreference: "default" }}
         aria-hidden
       >
         <ambientLight intensity={0.35} />
         <directionalLight position={[3, 4, 5]} intensity={1.6} />
         <pointLight position={[-4, -2, 3]} intensity={18} color="#4C7FF0" />
+        {/* Bila FPS turun, turunkan resolusi render otomatis. */}
+        <PerformanceMonitor onDecline={() => setDpr(1)} onIncline={() => setDpr(1.5)} />
         <Logo scrollRef={scroll} />
-        <ContactShadows position={[0, -2.1, 0]} opacity={0.45} scale={9} blur={2.6} far={4} color="#0B214A" />
         {/* Lingkungan dari lightformer lokal: tidak mengunduh HDR (CSP connect-src ketat). */}
-        <Environment resolution={256}>
+        <Environment resolution={128}>
           <Lightformer form="rect" intensity={3} position={[0, 4, 4]} scale={[8, 2, 1]} color="#ffffff" />
           <Lightformer form="rect" intensity={2} position={[-5, 0, 2]} scale={[2, 6, 1]} color="#4C7FF0" />
           <Lightformer form="rect" intensity={1.5} position={[5, -1, 2]} scale={[2, 6, 1]} color="#E8DCCB" />

@@ -25,7 +25,7 @@ export function SiteShell({ children, wide = true }: { children: React.ReactNode
         </div>
       </header>
       <NavTabs variant="mobile" />
-      <main className={`mx-auto w-full px-4 pb-28 pt-5 md:pb-10 md:pt-8 ${wide ? "max-w-[1200px]" : "max-w-[760px]"}`}>
+      <main className={`animate-[fade-in_300ms_ease-out] mx-auto w-full px-4 pb-28 pt-5 md:pb-10 md:pt-8 ${wide ? "max-w-[1200px]" : "max-w-[760px]"}`}>
         {children}
       </main>
       <footer className="mx-auto mb-24 max-w-[1200px] px-4 md:mb-0">

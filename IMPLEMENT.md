@@ -176,6 +176,16 @@ Di `lib/categories.ts`; versi terang supaya terbaca di latar gelap.
 
 `components/ui/*` (Button pill, field kaca, Dialog/Toast glass-strong), `components/NavTabs.tsx` (navbar desktop + bottom nav mobile, indikator `layoutId`), `components/CommandPalette.tsx` (cmdk, ⌘K / Ctrl+K / "/").
 
+### 4.7b Aturan performa (HP jadi acuan)
+
+- `backdrop-filter` hanya untuk layar >= 1024px + hover (`.glass`) atau >= 768px (`.glass-strong`). Di HP latar semi-solid. Jangan menambah `backdrop-blur-*` pada elemen yang berulang (kartu).
+- Jangan animasikan `box-shadow`/`filter`/`width`; pakai `transform` dan `opacity`. Blob latar memakai `radial-gradient`, bukan `filter: blur`.
+- Animasi per item list memakai CSS (`.rise`, `.cv-auto`), bukan komponen `motion` per kartu. `TiltCard` hanya aktif untuk pointer halus + hover.
+- Logo 3D hanya di desktop (`canRun3D` di `components/home/Logo3DSlot.tsx`); HP mendapat SVG beranimasi CSS dan tidak mengunduh three.js. Material tanpa `transmission`, tanpa ContactShadows, `PerformanceMonitor` menurunkan DPR otomatis.
+- Palette Cmd+K di-lazy-load (`CommandPaletteLoader`); pemicunya ada di `lib/client/palette.ts` agar cmdk tidak masuk bundle awal.
+- Query publik di-cache 60 dtk (`unstable_cache` di `lib/queries.ts`, tag `broadcasts`/`moments`); `app/admin/actions.ts` memanggil `revalidateTag(..., { expire: 0 })` agar perubahan admin langsung terlihat. Pencarian teks (`q`) tidak di-cache.
+- Gambar broadcast/momen lewat `next/image`; foto momen diperkecil di browser (maks 2400px, WebP) sebelum diunggah.
+
 ### 4.8 Fitur angkatan
 
 - **Disimpan & "Baru"**: bookmark di localStorage (`lib/client/saved.ts`), halaman `/disimpan` mengambil detail via `GET /api/broadcasts?ids=`. Badge "Baru" = masuk setelah kunjungan sebelumnya.

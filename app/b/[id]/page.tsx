@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, CalendarClock, CalendarPlus, Download, FileText } from "lucide-react";
@@ -90,8 +91,15 @@ export default async function BroadcastPage({ params }: Props) {
             {images.map((m) => (
               <Reveal key={m.path}>
                 <a href={m.url} target="_blank" rel="noopener noreferrer" className="block overflow-hidden rounded-[18px] border border-line">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={m.url} alt="" className="w-full transition-transform duration-500 hover:scale-[1.02]" />
+                  <Image
+                    src={m.url}
+                    alt=""
+                    width={m.width ?? 1200}
+                    height={m.height ?? 900}
+                    sizes="(max-width: 760px) 100vw, 696px"
+                    quality={75}
+                    className="h-auto w-full transition-transform duration-500 hover:scale-[1.02]"
+                  />
                 </a>
               </Reveal>
             ))}

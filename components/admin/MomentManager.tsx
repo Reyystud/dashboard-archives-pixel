@@ -17,6 +17,29 @@ import type { Moment } from "@/lib/queries";
 const ACCEPT = "image/jpeg,image/png,image/webp,image/avif";
 const MAX_BYTES = 10 * 1024 * 1024;
 
+const MAX_EDGE = 2400;
+
+/** Perkecil foto (sisi terpanjang 2400px) dan simpan sebagai WebP sebelum diunggah; foto HP 5-10 MB jadi ±300-600 KB. */
+async function prepareImage(file: File): Promise<File> {
+  try {
+    const bmp = await createImageBitmap(file);
+    const scale = Math.min(1, MAX_EDGE / Math.max(bmp.width, bmp.height));
+    if (scale === 1 && file.size < 1.5 * 1024 * 1024) {
+      bmp.close();
+      return file;
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bmp.width * scale);
+    canvas.height = Math.round(bmp.height * scale);
+    canvas.getContext("2d")!.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+    bmp.close();
+    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/webp", 0.82));
+    return blob && blob.size < file.size ? new File([blob], file.name.replace(/\.\w+$/, ".webp"), { type: "image/webp" }) : file;
+  } catch {
+    return file;
+  }
+}
+
 function imageSize(file: File): Promise<{ width: number; height: number } | null> {
   return new Promise((resolve) => {
     const url = URL.createObjectURL(file);
@@ -136,11 +159,12 @@ function CreateMoment({ open, onOpenChange, onDone }: { open: boolean; onOpenCha
     setBusy(true);
     setError(null);
     try {
-      const up = await createMomentUpload(file.type);
+      const file2 = await prepareImage(file);
+      const up = await createMomentUpload(file2.type);
       if (!up.ok || !up.path || !up.token) throw new Error(up.ok ? "Gagal menyiapkan unggahan" : up.error);
-      const { error: upErr } = await supabaseBrowser().storage.from("moments").uploadToSignedUrl(up.path, up.token, file, { contentType: file.type });
+      const { error: upErr } = await supabaseBrowser().storage.from("moments").uploadToSignedUrl(up.path, up.token, file2, { contentType: file2.type });
       if (upErr) throw new Error("Unggah foto gagal");
-      const size = await imageSize(file);
+      const size = await imageSize(file2);
       const r = await createMoment({ title, caption: caption || null, taken_on: date, image_path: up.path, width: size?.width, height: size?.height });
       if (!r.ok) throw new Error(r.error);
       toast("Momen ditambahkan");

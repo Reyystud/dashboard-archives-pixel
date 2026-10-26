@@ -25,14 +25,10 @@ export function Reveal({
 
 /** Masuk berurutan untuk item list; delay dibatasi supaya halaman panjang tidak terasa lambat. */
 export function StaggerItem({ children, index, className }: { children: React.ReactNode; index: number; className?: string }) {
+  // CSS murni (class .rise): tanpa instance motion per kartu, dan kartu di luar layar dilewati (.cv-auto).
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 16, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.45, ease: EASE, delay: Math.min(index % 20, 8) * 0.05 }}
-    >
+    <div className={`rise cv-auto ${className ?? ""}`} style={{ animationDelay: `${Math.min(index % 20, 8) * 50}ms` }}>
       {children}
-    </motion.div>
+    </div>
   );
 }
