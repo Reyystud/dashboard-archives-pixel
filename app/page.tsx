@@ -30,8 +30,7 @@ export default async function Home({ searchParams }: Props) {
       <section id="arsip" aria-labelledby="arsip-title" className="scroll-mt-24">
         <div className="mb-4 flex items-end justify-between gap-4">
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-brand-300">01 · Arsip</p>
-            <h2 id="arsip-title" className="mt-1 text-[26px] font-bold md:text-[34px]">Broadcast angkatan</h2>
+            <h2 id="arsip-title" className="text-[26px] font-bold md:text-[34px]">Broadcast angkatan</h2>
           </div>
         </div>
         <FeedBrowser

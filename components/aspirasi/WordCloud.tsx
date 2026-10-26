@@ -65,7 +65,7 @@ export function CloudView({
             className={cn(
               "cloud-word cursor-pointer text-center",
               w.hidden && "line-through opacity-35",
-              selected === w.normalized && "bg-white/10",
+              selected === w.normalized && "shadow-neu-in-sm",
             )}
           >
             {w.display_text}

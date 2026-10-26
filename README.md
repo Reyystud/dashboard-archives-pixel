@@ -6,10 +6,10 @@ Implementasi dari `IMPLEMENT.md`. Next.js (App Router) + Supabase + Telegram bot
 
 ```bash
 cp .env.example .env.local   # isi semua nilai
-pnpm install
-pnpm dev
-pnpm test        # vitest
-pnpm build
+npm install
+npm run dev
+npm test         # vitest
+npm run build
 ```
 
 Setup Supabase, OpenRouter, Vercel, dan bot Telegram: lihat bagian 13 di `IMPLEMENT.md`.

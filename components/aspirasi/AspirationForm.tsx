@@ -75,7 +75,7 @@ export function AspirationForm({
           }
         }}
         placeholder="Tulis singkat, misal: perpanjang jam lab"
-        className="max-h-40 min-h-11 w-full resize-none rounded-md border border-line-strong bg-surface px-3 py-2.5 text-[15px] placeholder:text-muted"
+        className="max-h-40 min-h-11 w-full resize-none rounded-[14px] neu-well px-3 py-2.5 text-[15px] placeholder:text-muted"
       />
       <div className="flex items-center justify-between gap-3">
         <span className="font-mono text-[13px] text-muted" aria-live="polite">

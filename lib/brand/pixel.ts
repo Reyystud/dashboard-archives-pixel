@@ -1,5 +1,5 @@
 // Geometri logo PIXEL'25 (diukur dari "LOGO ANGKATAN.png", viewBox 1317x1010).
-// Dipakai bersama oleh PixelMark (SVG), IntroLoader (animasi) dan PixelLogo3D.
+// Dipakai bersama oleh PixelMark (SVG), IntroLoader dan PixelHop (animasi).
 
 export const PIXEL_VIEWBOX = { w: 1317, h: 1010 } as const;
 

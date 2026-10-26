@@ -33,7 +33,7 @@ export function IntroLoader() {
   useEffect(() => {
     if (show) return;
     document.documentElement.style.overflow = "";
-    // Tandai selesai saat panel mulai naik, supaya logo 3D sudah merakit ketika terlihat.
+    // Tandai selesai saat panel mulai naik.
     document.documentElement.dataset.intro = "done";
   }, [show]);
 
@@ -109,7 +109,7 @@ export function IntroLoader() {
             >
               HMIF ITB
             </motion.p>
-            <div className="mt-6 h-[2px] w-40 overflow-hidden rounded-full bg-white/10">
+            <div className="neu-well-sm mt-6 h-[6px] w-40 overflow-hidden rounded-full p-[2px]">
               <motion.div
                 className="h-full origin-left bg-gradient-to-r from-brand-500 to-sand"
                 initial={{ scaleX: 0 }}

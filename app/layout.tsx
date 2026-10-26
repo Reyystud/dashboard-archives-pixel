@@ -5,6 +5,7 @@ import { Space_Grotesk } from "next/font/google";
 import { ToastProvider } from "@/components/ui/Toast";
 import { Providers } from "@/components/Providers";
 import { IntroLoader } from "@/components/motion/IntroLoader";
+import { BackdropCanvas } from "@/components/background/BackdropCanvas";
 import { INTRO_BOOT_SCRIPT } from "@/lib/brand/intro";
 import { clientEnv } from "@/lib/env";
 import "./globals.css";
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: { siteName: "PIXEL'25", images: ["/brand/pixel-logo.png"] },
 };
 
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#05070F", colorScheme: "dark" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#161F3C", colorScheme: "dark" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,8 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <div className="backdrop-scene" aria-hidden>
-          <span className="blob" style={{ width: "38vw", height: "38vw", left: "-8vw", top: "40vh", "--blob": "#1A4BA3" } as React.CSSProperties} />
-          <span className="blob" style={{ width: "30vw", height: "30vw", right: "-6vw", top: "-6vw", "--blob": "#205BC2", animationDelay: "-8s" } as React.CSSProperties} />
+          <BackdropCanvas />
         </div>
         <Providers>
           <ToastProvider>{children}</ToastProvider>

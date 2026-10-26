@@ -36,7 +36,7 @@ export function MomentGallery({ moments }: { moments: Moment[] }) {
   if (!moments.length) {
     return (
       <div className="glass flex flex-col items-center gap-3 rounded-[26px] px-6 py-16 text-center">
-        <span className="grid size-14 place-items-center rounded-2xl bg-brand-50 text-brand-300">
+        <span className="neu-well grid size-14 place-items-center rounded-2xl text-brand-300">
           <Images size={24} strokeWidth={1.75} aria-hidden />
         </span>
         <p className="font-display text-[18px] font-semibold">Belum ada momen</p>
@@ -48,7 +48,7 @@ export function MomentGallery({ moments }: { moments: Moment[] }) {
   return (
     <>
       {years.length > 1 ? (
-        <div className="no-scrollbar isolate mb-5 flex gap-2 overflow-x-auto" role="group" aria-label="Filter tahun">
+        <div className="no-scrollbar isolate -mx-3 mb-4 flex gap-3 overflow-x-auto px-3 py-3" role="group" aria-label="Filter tahun">
           {[null, ...years].map((y) => (
             <button
               key={y ?? "all"}
@@ -56,11 +56,11 @@ export function MomentGallery({ moments }: { moments: Moment[] }) {
               aria-pressed={year === y}
               onClick={() => setYear(y)}
               className={cn(
-                "relative min-h-10 flex-none cursor-pointer rounded-full border px-4 text-[14px] transition-colors",
-                year === y ? "border-transparent text-white" : "border-line bg-white/5 text-ink-2 hover:text-ink",
+                "relative min-h-10 flex-none cursor-pointer rounded-full px-4 text-[14px] transition-colors",
+                year === y ? "text-white" : "neu-raise text-ink-2 hover:text-ink",
               )}
             >
-              {year === y ? <motion.span layoutId="year-pill" className="absolute inset-0 -z-10 rounded-full bg-gradient-to-b from-brand-500 to-brand-700" /> : null}
+              {year === y ? <motion.span layoutId="year-pill" className="neu-brand absolute inset-0 -z-10 rounded-full" /> : null}
               {y ?? "Semua"}
             </button>
           ))}

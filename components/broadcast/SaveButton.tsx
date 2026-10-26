@@ -21,7 +21,7 @@ export function SaveButton({ id, withLabel = false }: { id: string; withLabel?: 
       }}
       className={cn(
         "relative z-10 inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center gap-2 rounded-full transition-[color,transform] active:scale-90",
-        withLabel ? "border border-line-strong bg-white/5 px-4 text-[15px] hover:bg-white/10" : "-m-2",
+        withLabel ? "neu-raise px-4 text-[15px]" : "-m-2",
         on ? "text-sand" : "text-muted hover:text-ink",
       )}
     >

@@ -12,8 +12,7 @@ export default async function MomenPage() {
   return (
     <SiteShell>
       <Reveal>
-        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-brand-300">03 · Momen</p>
-        <h1 className="mt-1 text-[32px] font-bold leading-tight md:text-[44px]">
+        <h1 className="text-[32px] font-bold leading-tight md:text-[44px]">
           Momen <span className="text-gradient">PIXEL&apos;25</span>
         </h1>
         <p className="mt-1 max-w-prose text-ink-2">Potongan cerita angkatan, dari makrab sampai begadang tubes.</p>

@@ -45,14 +45,14 @@ export function AspirationList({
     <section aria-labelledby="daftar-aspirasi">
       <div className="mb-3 flex flex-wrap items-center gap-3">
         <h2 id="daftar-aspirasi" className="text-[17px] font-semibold">Aspirasi</h2>
-        <div className="ml-auto flex rounded-md border border-line bg-surface p-0.5" role="group" aria-label="Urutan">
+        <div className="neu-well-sm ml-auto flex rounded-full p-1" role="group" aria-label="Urutan">
           {(["new", "top"] as const).map((m) => (
             <button
               key={m}
               type="button"
               aria-pressed={mode === m}
               onClick={() => setMode(m)}
-              className={`min-h-9 cursor-pointer rounded-sm px-3 text-[14px] transition-colors duration-150 ${mode === m ? "bg-brand-600 text-white" : "text-ink-2"}`}
+              className={`min-h-9 cursor-pointer rounded-full px-3 text-[14px] transition-colors duration-150 ${mode === m ? "neu-brand text-white" : "text-ink-2 hover:text-ink"}`}
             >
               {m === "new" ? "Terbaru" : "Terbanyak"}
             </button>

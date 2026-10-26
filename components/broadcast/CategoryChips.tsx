@@ -41,14 +41,14 @@ export function CategoryChips({ active, q, counts, ...h }: { active?: string; q?
         {...nav(h, key)}
         aria-current={on ? "true" : undefined}
         className={cn(
-          "relative flex min-h-10 flex-none items-center gap-2 rounded-full border px-3.5 text-[14px] whitespace-nowrap transition-colors duration-200",
-          on ? "border-transparent text-white" : "border-line bg-white/5 text-ink-2 hover:text-ink",
+          "relative flex min-h-10 flex-none items-center gap-2 rounded-full px-3.5 text-[14px] whitespace-nowrap transition-colors duration-200",
+          on ? "text-white" : "neu-raise text-ink-2 hover:text-ink",
         )}
       >
         {on ? (
           <motion.span
             layoutId="chip-active"
-            className="absolute inset-0 -z-10 rounded-full bg-gradient-to-b from-brand-500 to-brand-700"
+            className="neu-brand absolute inset-0 -z-10 rounded-full"
             transition={{ type: "spring", stiffness: 380, damping: 32 }}
           />
         ) : null}
@@ -59,7 +59,7 @@ export function CategoryChips({ active, q, counts, ...h }: { active?: string; q?
     );
   };
   return (
-    <nav aria-label="Kategori" className="no-scrollbar isolate flex gap-2 overflow-x-auto py-2">
+    <nav aria-label="Kategori" className="no-scrollbar isolate -mx-3 flex gap-3 overflow-x-auto px-3 py-3">
       {chip(undefined, "Semua", null, total)}
       {CATEGORIES.map((c) => chip(c.key, c.label, c.color, counts[c.key] ?? 0))}
     </nav>
@@ -78,13 +78,13 @@ export function CategorySidebar({ active, q, counts, ...h }: { active?: string; 
         aria-current={on ? "true" : undefined}
         className={cn(
           "relative flex min-h-10 items-center gap-2.5 rounded-xl px-3 text-[14px] transition-colors duration-200",
-          on ? "font-medium text-ink" : "text-ink-2 hover:bg-white/5 hover:text-ink",
+          on ? "font-medium text-ink" : "text-ink-2 hover:text-ink",
         )}
       >
         {on ? (
           <motion.span
             layoutId="side-active"
-            className="absolute inset-0 -z-10 rounded-xl border border-brand-500/30 bg-brand-50"
+            className="absolute inset-0 -z-10 rounded-xl neu-well-sm"
             transition={{ type: "spring", stiffness: 380, damping: 32 }}
           />
         ) : null}

@@ -13,7 +13,7 @@ export function SearchBar({ value, onChange }: { value: string; onChange: (v: st
         onChange={(e) => onChange(e.target.value)}
         placeholder="Cari broadcast"
         aria-label="Cari broadcast"
-        className="glass min-h-12 w-full rounded-full pl-11 pr-11 text-[15px] transition-colors hover:border-line-strong focus-visible:outline-brand-400 placeholder:text-muted [&::-webkit-search-cancel-button]:hidden"
+        className="neu-well min-h-12 w-full rounded-full pl-11 pr-11 text-[15px] focus-visible:outline-brand-400 placeholder:text-muted [&::-webkit-search-cancel-button]:hidden"
       />
       {value ? (
         <button
