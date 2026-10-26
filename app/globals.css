@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
-/* PIXEL'25 — dark navy + biru logo + krem ring. Permukaan = kaca di atas latar navy. */
+/* PIXEL'25: dark neumorphism. Satu permukaan navy, kedalaman dari bayangan terang (kiri atas) dan gelap (kanan bawah). */
 @theme {
-  --color-bg: #05070F;
-  --color-bg-2: #0A1230;
-  --color-surface: rgba(255, 255, 255, 0.045);
-  --color-surface-2: rgba(255, 255, 255, 0.08);
-  --color-surface-solid: #0D1430;
-  --color-ink: #EAF0FF;
-  --color-ink-2: #B4C0DA;
-  --color-muted: #8390AE;
-  --color-line: rgba(255, 255, 255, 0.08);
-  --color-line-strong: rgba(255, 255, 255, 0.16);
+  --color-bg: #161F3C;
+  --color-bg-2: #1A2446;
+  --color-surface: #18223F;
+  --color-surface-2: #1D2849;
+  --color-surface-solid: #161F3C;
+  --color-ink: #EEF2FF;
+  --color-ink-2: #BAC5DE;
+  --color-muted: #8E9BBA;
+  --color-line: rgba(255, 255, 255, 0.05);
+  --color-line-strong: rgba(255, 255, 255, 0.09);
 
   --color-brand-950: #0B214A;
   --color-brand-900: #133A80;
@@ -23,7 +23,7 @@
   --color-brand-300: #9DBAFF;
   --color-brand-200: #C3D5FF;
   --color-brand-100: rgba(32, 91, 194, 0.28);
-  --color-brand-50: rgba(32, 91, 194, 0.14);
+  --color-brand-50: rgba(32, 91, 194, 0.16);
 
   --color-sand: #E8DCCB;
   --color-sand-2: #C9BBA7;
@@ -42,7 +42,15 @@
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-display: var(--font-space-grotesk), var(--font-geist-sans), ui-sans-serif, sans-serif;
 
-  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 12px 32px -16px rgba(0, 0, 0, 0.6);
+  /* Bayangan neumorphism: gelap ke kanan bawah, terang ke kiri atas. */
+  --shadow-neu-xs: 2px 2px 5px rgba(6, 10, 26, 0.75), -2px -2px 5px rgba(54, 74, 132, 0.38);
+  --shadow-neu-sm: 4px 4px 10px rgba(6, 10, 26, 0.8), -4px -4px 10px rgba(54, 74, 132, 0.38);
+  --shadow-neu: 8px 8px 20px rgba(6, 10, 26, 0.85), -8px -8px 20px rgba(54, 74, 132, 0.36);
+  --shadow-neu-lg: 16px 16px 40px rgba(6, 10, 26, 0.9), -14px -14px 36px rgba(54, 74, 132, 0.34);
+  --shadow-neu-in-sm: inset 3px 3px 7px rgba(6, 10, 26, 0.8), inset -3px -3px 7px rgba(54, 74, 132, 0.36);
+  --shadow-neu-in: inset 6px 6px 14px rgba(6, 10, 26, 0.85), inset -6px -6px 14px rgba(54, 74, 132, 0.34);
+
+  --shadow-card: var(--shadow-neu);
   --shadow-glow: 0 0 0 1px rgba(76, 127, 240, 0.35), 0 10px 40px -10px rgba(32, 91, 194, 0.55);
 }
 
@@ -58,7 +66,8 @@ body {
   font-size: 15px;
   line-height: 1.6;
   min-height: 100dvh;
-  background: var(--color-bg);
+  /* Transparan: warna dasar ada di <html>, supaya latar animasi (z-index -1) tidak tertutup. */
+  background: transparent;
   overflow-x: hidden;
 }
 @media (min-width: 768px) {
@@ -73,71 +82,68 @@ h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0
   outline-offset: 2px;
 }
 
-/* Latar: blob biru + grid pixel halus, tetap di belakang semua konten */
+/* Latar: permukaan rata. Neumorphism butuh satu warna dasar supaya bayangan terbaca. */
 .backdrop-scene {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  overflow: hidden;
   background:
-    radial-gradient(60vw 50vh at 85% -10%, rgba(32, 91, 194, 0.35), transparent 60%),
-    radial-gradient(50vw 45vh at -10% 30%, rgba(51, 104, 218, 0.22), transparent 60%),
-    radial-gradient(45vw 40vh at 60% 110%, rgba(232, 220, 203, 0.10), transparent 60%),
-    linear-gradient(180deg, var(--color-bg-2) 0%, var(--color-bg) 55%);
-}
-.backdrop-scene::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse at 50% 0%, black 20%, transparent 75%);
-}
-/* Blob memakai radial-gradient (bukan filter: blur) supaya tidak perlu layer blur besar di GPU HP. */
-.backdrop-scene .blob {
-  position: absolute;
-  border-radius: 9999px;
-  background: radial-gradient(closest-side, var(--blob, #205BC2), transparent 100%);
-  opacity: 0.5;
-}
-@media (min-width: 1024px) and (hover: hover) {
-  .backdrop-scene .blob { will-change: transform; animation: drift 22s ease-in-out infinite alternate; }
-}
-@keyframes drift {
-  from { transform: translate3d(0, 0, 0) scale(1); }
-  to { transform: translate3d(6vw, 4vh, 0) scale(1.15); }
+    radial-gradient(80vw 60vh at 50% -20%, rgba(60, 84, 150, 0.18), transparent 70%),
+    var(--color-bg);
 }
 
-/* Kaca */
-/* backdrop-filter sangat mahal di GPU HP (satu layer blur per kartu). Di HP: latar semi-solid bernuansa sama;
-   blur asli hanya untuk layar lebar + pointer halus. */
-.glass {
-  background: linear-gradient(180deg, rgba(24, 34, 72, 0.62), rgba(12, 18, 42, 0.62));
-  border: 1px solid var(--color-line);
-  box-shadow: var(--shadow-card);
+/* Permukaan timbul (kartu, panel). Nama lama .glass dipertahankan agar semua komponen ikut berubah. */
+.glass,
+.neu {
+  background: linear-gradient(145deg, #1A2445, #141C37);
+  border: 1px solid rgba(255, 255, 255, 0.035);
+  box-shadow: var(--shadow-neu);
 }
 .glass-strong {
-  background: linear-gradient(180deg, rgba(20, 30, 66, 0.96), rgba(10, 16, 40, 0.95));
-  border: 1px solid var(--color-line-strong);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 24px 60px -20px rgba(0, 0, 0, 0.75);
+  background: linear-gradient(145deg, #1B2547, #151D39);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: var(--shadow-neu-lg);
 }
-@media (min-width: 1024px) and (hover: hover) {
-  .glass {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-    backdrop-filter: blur(16px) saturate(140%);
-  }
+
+/* Kontrol timbul kecil: tombol, chip, tag. Ditekan = cekung. */
+.neu-raise {
+  background: linear-gradient(145deg, #1B2547, #151D39);
+  box-shadow: var(--shadow-neu-sm);
+  transition: box-shadow 180ms ease, transform 180ms ease, color 180ms ease;
 }
-@media (min-width: 768px) {
-  .glass-strong {
-    background: linear-gradient(180deg, rgba(20, 30, 66, 0.82), rgba(10, 16, 40, 0.78));
-    -webkit-backdrop-filter: blur(24px) saturate(160%);
-    backdrop-filter: blur(24px) saturate(160%);
-  }
+.neu-raise:hover { box-shadow: var(--shadow-neu); }
+.neu-raise:active,
+.neu-raise[aria-pressed="true"],
+.neu-raise[aria-current="true"],
+.neu-raise[aria-current="page"] {
+  background: var(--color-bg);
+  box-shadow: var(--shadow-neu-in-sm);
 }
+.neu-xs { background: linear-gradient(145deg, #1B2547, #151D39); box-shadow: var(--shadow-neu-xs); }
+
+/* Permukaan cekung: input, sumur, track. */
+.neu-well { background: var(--color-bg); box-shadow: var(--shadow-neu-in); }
+.neu-well-sm { background: var(--color-bg); box-shadow: var(--shadow-neu-in-sm); }
+
+/* Tombol utama: cembung biru, tetap memakai bayangan neumorphism di luar. */
+.neu-brand {
+  background: linear-gradient(145deg, #4579E8, #1C52B4);
+  box-shadow: 5px 5px 12px rgba(6, 10, 26, 0.85), -4px -4px 10px rgba(54, 74, 132, 0.38), inset 1px 1px 0 rgba(255, 255, 255, 0.2);
+  transition: box-shadow 180ms ease, filter 180ms ease;
+}
+.neu-brand:hover { filter: brightness(1.08); }
+.neu-brand:active,
+.neu-brand[aria-pressed="true"] {
+  box-shadow: inset 3px 3px 8px rgba(5, 14, 40, 0.55), inset -2px -2px 6px rgba(140, 175, 255, 0.28);
+}
+
+/* Kartu interaktif terangkat sedikit saat hover. */
+.neu-hover { transition: box-shadow 220ms ease, transform 220ms ease; }
+@media (hover: hover) {
+  .neu-hover:hover { box-shadow: var(--shadow-neu-lg); }
+}
+
 .glow-blue { box-shadow: var(--shadow-glow); }
 .text-gradient {
   background: linear-gradient(100deg, #FFFFFF 0%, var(--color-brand-300) 45%, var(--color-sand) 100%);
@@ -186,7 +192,8 @@ h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0
 
 @keyframes skeleton { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 .skeleton {
-  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.10) 50%, rgba(255,255,255,0.04) 75%);
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.03) 75%);
+  box-shadow: var(--shadow-neu-in-sm);
   background-size: 200% 100%;
   border-radius: var(--radius-sm);
   animation: skeleton 1.6s linear infinite;
@@ -241,6 +248,8 @@ html[data-intro="done"] .intro-loader { display: none; }
 /* Lewati render kartu di luar layar (feed panjang). */
 .cv-auto { content-visibility: auto; contain-intrinsic-size: auto 190px; }
 
-/* Logo SVG pengganti 3D di HP: gerak halus lewat transform (compositor). */
-@keyframes logo-float { 0%, 100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
-.logo-float { animation: logo-float 6s ease-in-out infinite; will-change: transform; }
+
+/* Emboss logo animasi: filter SVG hanya di layar lebar (mahal di GPU HP). */
+@media (min-width: 1024px) {
+  .hop-emboss { filter: url(#hop-emboss); }
+}

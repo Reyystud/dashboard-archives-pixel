@@ -183,7 +183,7 @@ function CreateMoment({ open, onOpenChange, onDone }: { open: boolean; onOpenCha
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
-          className="grid aspect-[4/3] w-full cursor-pointer place-items-center overflow-hidden rounded-[14px] border border-dashed border-line-strong bg-white/5 text-muted hover:border-brand-400"
+          className="grid aspect-[4/3] w-full cursor-pointer place-items-center overflow-hidden rounded-[14px] neu-well border border-dashed border-line-strong text-muted hover:border-brand-400"
         >
           {preview ? (
             // eslint-disable-next-line @next/next/no-img-element

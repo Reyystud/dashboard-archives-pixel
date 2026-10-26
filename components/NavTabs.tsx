@@ -41,7 +41,7 @@ export function NavTabs({ variant }: { variant: "desktop" | "mobile" }) {
             {active(i.href) ? (
               <motion.span
                 layoutId="nav-pill"
-                className="absolute inset-0 -z-10 rounded-full border border-white/10 bg-white/10"
+                className="absolute inset-0 -z-10 rounded-full neu-well-sm"
                 transition={{ type: "spring", stiffness: 380, damping: 32 }}
               />
             ) : null}
@@ -67,13 +67,13 @@ export function NavTabs({ variant }: { variant: "desktop" | "mobile" }) {
           aria-current={active(i.href) ? "page" : undefined}
           className={cn(
             "relative flex flex-1 flex-col items-center justify-center gap-0.5 text-[11px] transition-colors",
-            active(i.href) ? "text-ink" : "text-muted",
+            active(i.href) ? "text-brand-300" : "text-muted",
           )}
         >
           {active(i.href) ? (
             <motion.span
               layoutId="nav-pill-m"
-              className="absolute inset-x-1 inset-y-1.5 -z-10 rounded-2xl bg-brand-50 ring-1 ring-brand-500/30"
+              className="absolute inset-x-1 inset-y-1.5 -z-10 rounded-2xl neu-well-sm"
               transition={{ type: "spring", stiffness: 380, damping: 32 }}
             />
           ) : null}
@@ -92,7 +92,7 @@ export function SearchTrigger({ compact = false }: { compact?: boolean }) {
       onClick={openCommandPalette}
       aria-label="Buka pencarian cepat"
       className={cn(
-        "flex min-h-10 cursor-pointer items-center gap-2 rounded-full border border-line bg-white/5 text-[14px] text-muted transition-colors hover:border-line-strong hover:text-ink",
+        "neu-raise flex min-h-10 cursor-pointer items-center gap-2 rounded-full text-[14px] text-muted hover:text-ink",
         compact ? "size-11 justify-center" : "px-3.5",
       )}
     >
@@ -100,7 +100,7 @@ export function SearchTrigger({ compact = false }: { compact?: boolean }) {
       {compact ? null : (
         <>
           <span>Cari</span>
-          <kbd className="rounded-md border border-line px-1.5 font-mono text-[11px]">⌘K</kbd>
+          <kbd className="neu-well-sm rounded-md px-1.5 font-mono text-[11px]">⌘K</kbd>
         </>
       )}
     </button>

@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Skill Claude Code (dokumentasi + template), bukan kode aplikasi.
+    ".claude/**",
   ]),
 ]);
 

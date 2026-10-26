@@ -14,8 +14,7 @@ export default async function AspirasiPage() {
   return (
     <SiteShell wide={false}>
       <Reveal>
-        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-brand-300">04 · Aspirasi</p>
-        <h1 className="mt-1 text-[32px] font-bold leading-tight md:text-[44px]">Pojok Aspirasi</h1>
+        <h1 className="text-[32px] font-bold leading-tight md:text-[44px]">Pojok Aspirasi</h1>
         <p className="mt-1 text-ink-2">Tulis aspirasimu tanpa login. Jawaban yang sama akan tampil makin besar.</p>
       </Reveal>
 
@@ -23,7 +22,7 @@ export default async function AspirasiPage() {
         {list.length ? (
           list.map((p, i) => (
             <Reveal key={p.id} delay={Math.min(i, 6) * 0.05}>
-            <TiltCard className="glass group rounded-[22px] transition-colors duration-200 hover:border-line-strong">
+            <TiltCard className="glass neu-hover group rounded-[22px]">
             <Link href={`/aspirasi/${p.slug}`} className="block p-5">
               <div className="flex items-center justify-between gap-3">
                 <h2 className="text-[19px] font-semibold transition-colors group-hover:text-brand-200">{p.title}</h2>

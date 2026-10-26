@@ -35,7 +35,7 @@ export default async function BroadcastPage({ params }: Props) {
 
   return (
     <SiteShell wide={false}>
-      <Link href="/#arsip" className="-ml-2 inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-[15px] text-ink-2 transition-colors hover:bg-white/5 hover:text-ink">
+      <Link href="/#arsip" className="-ml-2 inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-[15px] text-ink-2 transition-shadow hover:text-ink hover:shadow-neu-xs active:shadow-neu-in-sm">
         <ArrowLeft size={18} strokeWidth={1.75} /> Arsip
       </Link>
 
@@ -54,7 +54,7 @@ export default async function BroadcastPage({ params }: Props) {
         </Reveal>
 
         {b.deadline && left !== null ? (
-          <Reveal delay={0.08} className="mt-5 flex flex-col gap-3 rounded-[18px] border border-brand-500/25 bg-brand-50 p-4 md:flex-row md:items-center">
+          <Reveal delay={0.08} className="mt-5 flex flex-col gap-3 rounded-[18px] neu-well p-4 md:flex-row md:items-center">
             <div className="flex items-center gap-3">
               <span className="grid size-11 place-items-center rounded-xl bg-brand-700/40 text-brand-200">
                 <CalendarClock size={20} strokeWidth={1.75} aria-hidden />
@@ -106,7 +106,7 @@ export default async function BroadcastPage({ params }: Props) {
           </div>
         ) : null}
         {pdfs.map((m) => (
-          <div key={m.path} className="mt-3 flex items-center gap-3 rounded-[18px] border border-line bg-white/5 p-3">
+          <div key={m.path} className="mt-3 flex items-center gap-3 rounded-[18px] neu-well-sm p-3">
             <FileText size={18} strokeWidth={1.75} className="text-muted" aria-hidden />
             <span className="flex-1 truncate font-mono text-[13px]">{m.path.split("/").pop()}</span>
             <a href={m.url} target="_blank" rel="noopener noreferrer" className={buttonClass("secondary")}>Buka PDF</a>

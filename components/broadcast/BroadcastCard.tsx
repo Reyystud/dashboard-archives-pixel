@@ -12,7 +12,7 @@ export function BroadcastCard({ b }: { b: Broadcast }) {
   const image = b.media.find((m) => m.mime.startsWith("image/"));
   const left = b.deadline ? daysUntil(b.deadline) : null;
   return (
-    <TiltCard className="glass group relative rounded-[22px] p-4 transition-colors duration-200 hover:border-line-strong md:p-5">
+    <TiltCard className="glass neu-hover group relative rounded-[22px] p-4 md:p-5">
       <article>
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <CategoryTag category={b.category} />

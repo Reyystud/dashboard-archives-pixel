@@ -22,7 +22,7 @@ export default async function PojokPage({ params }: Props) {
 
   return (
     <SiteShell wide={false}>
-      <Link href="/aspirasi" className="-ml-2 inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-[15px] text-ink-2 transition-colors hover:bg-white/5 hover:text-ink">
+      <Link href="/aspirasi" className="-ml-2 inline-flex min-h-11 items-center gap-1.5 rounded-full px-3 text-[15px] text-ink-2 transition-shadow hover:text-ink hover:shadow-neu-xs active:shadow-neu-in-sm">
         <ArrowLeft size={18} strokeWidth={1.75} /> Pojok Aspirasi
       </Link>
       <h1 className="mt-3 text-[26px] font-bold leading-tight md:text-[36px]">{pojok.question}</h1>

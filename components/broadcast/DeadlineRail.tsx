@@ -18,10 +18,10 @@ export function DeadlineRail({ items }: { items: { id: string; title: string; de
             const left = daysUntil(d.deadline!);
             return (
               <li key={d.id}>
-                <Link href={`/b/${d.id}`} className="group flex gap-3 rounded-xl p-2.5 transition-colors duration-200 hover:bg-white/5">
+                <Link href={`/b/${d.id}`} className="group flex gap-3 rounded-xl p-2.5 transition-shadow duration-200 hover:shadow-neu-xs">
                   <span
                     className={`grid w-12 flex-none place-items-center rounded-xl border py-1 font-mono leading-tight ${
-                      left <= 3 ? "border-warn/30 bg-warn/10" : "border-line bg-white/5"
+                      left <= 3 ? "border-warn/30 bg-warn/10 shadow-neu-in-sm" : "border-transparent neu-well-sm"
                     }`}
                   >
                     <span className={`block text-[20px] font-semibold ${left <= 3 ? "text-warn" : "text-brand-300"}`}>{p.day}</span>

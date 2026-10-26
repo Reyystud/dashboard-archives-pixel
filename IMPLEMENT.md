@@ -42,7 +42,7 @@ Admin: /admin-login, /admin/broadcasts, /admin/aspirasi
 - Ikon: `lucide-react`, stroke 1.75, ukuran 18. DILARANG ikon `Sparkles`, `Wand`, `Bot` untuk dekorasi.
 - Tidak ada library word cloud. Cloud dibuat sendiri (lihat bagian 9).
 
-Package manager: pnpm.
+Package manager: npm.
 
 ---
 
@@ -912,7 +912,7 @@ Supabase free tier mem-pause project setelah 7 hari tanpa aktivitas. Jika broadc
 
 ## 15. Kualitas dan verifikasi (Claude Code wajib menjalankan)
 
-1. `pnpm build` tanpa error dan tanpa warning TypeScript.
+1. `npm run build` tanpa error dan tanpa warning TypeScript.
 2. Unit test (vitest) untuk: `parseHeader`, `extractLinks` (termasuk `forms.gle/abc`, URL dengan tanda baca di akhir, text_link entity), `labelFor`, `normalizeAspiration`, `classifyByRules`, parser JSON AI (input dengan teks sebelum/sesudah JSON, kategori tidak valid jadi `lainnya`), ekstraksi deadline.
 3. Test route handler webhook dengan payload contoh: secret salah (403), bukan owner (ditolak), update duplikat (diabaikan), pesan teks baru (tersimpan), pesan duplikat konten, callback ganti kategori.
 4. Uji manual E2E setelah deploy:

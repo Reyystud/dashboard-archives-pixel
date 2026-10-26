@@ -52,7 +52,7 @@ export function SavedList() {
   if (!shown.length) {
     return (
       <div className="glass flex flex-col items-center gap-3 rounded-[26px] px-6 py-14 text-center">
-        <span className="grid size-14 place-items-center rounded-2xl bg-brand-50 text-brand-300">
+        <span className="neu-well grid size-14 place-items-center rounded-2xl text-brand-300">
           <Bookmark size={24} strokeWidth={1.75} aria-hidden />
         </span>
         <p className="font-display text-[18px] font-semibold">Belum ada yang disimpan</p>

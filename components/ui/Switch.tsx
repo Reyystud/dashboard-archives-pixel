@@ -20,8 +20,8 @@ export function Switch({
       onClick={() => onChange(!checked)}
       className="grid min-h-11 min-w-11 cursor-pointer place-items-center disabled:cursor-not-allowed disabled:opacity-50"
     >
-      <span className={cn("relative h-5 w-9 rounded-full transition-colors duration-150", checked ? "bg-brand-600" : "bg-white/15")}>
-        <span className={cn("absolute top-0.5 size-4 rounded-full bg-white transition-all duration-150", checked ? "left-[18px]" : "left-0.5")} />
+      <span className={cn("relative h-5 w-9 rounded-full transition-colors duration-150", checked ? "bg-brand-600 shadow-neu-in-sm" : "neu-well-sm")}>
+        <span className={cn("absolute top-0.5 size-4 rounded-full bg-ink shadow-neu-xs transition-all duration-150", checked ? "left-[18px]" : "left-0.5")} />
       </span>
     </button>
   );

@@ -40,8 +40,7 @@ export default async function KalenderPage({ searchParams }: Props) {
     <SiteShell>
       <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-brand-300">02 · Kalender</p>
-          <h1 className="mt-1 text-[32px] font-bold leading-tight md:text-[44px]">Kalender tenggat</h1>
+          <h1 className="text-[32px] font-bold leading-tight md:text-[44px]">Kalender tenggat</h1>
           <p className="mt-1 max-w-prose text-ink-2">Semua tenggat dari broadcast angkatan. Langganan sekali, otomatis ter-update di kalendermu.</p>
         </div>
         <a href={feed} className={buttonClass("primary", "self-start md:self-auto")}>
@@ -84,8 +83,8 @@ export default async function KalenderPage({ searchParams }: Props) {
                   key={day}
                   className={cn(
                     "relative flex min-h-[58px] flex-col gap-1 rounded-xl border p-1.5 md:min-h-[104px] md:p-2",
-                    out ? "border-transparent opacity-35" : "border-line bg-white/[0.025]",
-                    isToday && "border-brand-400/60 bg-brand-50 shadow-[0_0_0_1px_rgba(123,163,255,0.3),0_0_24px_-6px_rgba(76,127,240,0.6)]",
+                    out ? "border-transparent opacity-35" : "border-transparent neu-xs",
+                    isToday && "border-brand-400/50 bg-brand-50 shadow-neu-in-sm",
                   )}
                 >
                   <span className={cn("font-mono text-[12px]", isToday ? "font-semibold text-brand-200" : past ? "text-muted" : "text-ink-2")}>
@@ -103,7 +102,7 @@ export default async function KalenderPage({ searchParams }: Props) {
                       <Link
                         key={it.id}
                         href={`/b/${it.id}`}
-                        className={cn("truncate rounded-md px-1.5 py-0.5 text-[11px] leading-tight transition-colors hover:bg-white/10", past && "opacity-60")}
+                        className={cn("truncate rounded-md px-1.5 py-0.5 text-[11px] leading-tight transition-colors hover:shadow-neu-xs", past && "opacity-60")}
                         style={{ background: `${categoryOf(it.category).color}22`, color: categoryOf(it.category).color }}
                         title={it.title}
                       >
@@ -156,8 +155,8 @@ function DeadlineRow({ it, today, site, wide = false }: { it: DeadlineItem; toda
   const d = it.deadline!;
   const past = d < today;
   return (
-    <li className={cn("flex items-center gap-3 rounded-[18px] border border-line p-2.5", wide ? "glass" : "bg-white/[0.03]", past && "opacity-60")}>
-      <span className="grid w-12 flex-none place-items-center rounded-xl border border-line bg-white/5 py-1 font-mono leading-tight">
+    <li className={cn("flex items-center gap-3 rounded-[18px] p-2.5", wide ? "glass" : "neu-xs", past && "opacity-60")}>
+      <span className="grid w-12 flex-none place-items-center rounded-xl neu-well-sm py-1 font-mono leading-tight">
         <span className="text-[18px] font-semibold text-brand-300">{Number(d.slice(8))}</span>
         <span className="text-[10px] uppercase text-muted">{MONTHS[Number(d.slice(5, 7)) - 1].slice(0, 3)}</span>
       </span>
@@ -177,7 +176,7 @@ function DeadlineRow({ it, today, site, wide = false }: { it: DeadlineItem; toda
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Tambah "${it.title}" ke Google Calendar`}
-          className="grid size-11 flex-none place-items-center rounded-full text-muted transition-colors hover:bg-white/10 hover:text-ink"
+          className="grid size-11 flex-none place-items-center rounded-full text-muted neu-raise hover:text-ink"
         >
           <CalendarPlus size={18} strokeWidth={1.75} aria-hidden />
         </a>
