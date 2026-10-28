@@ -4,11 +4,9 @@ import { openCommandPalette } from "@/lib/client/palette";
 import { buttonClass } from "@/components/ui/Button";
 import type { HomeStats } from "@/lib/queries";
 import { ArrowDown, CalendarDays, Command } from "lucide-react";
-import { motion } from "motion/react";
 import Link from "next/link";
 import { PixelHop } from "./PixelHop";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function Hero({ stats }: { stats: HomeStats }) {
   // Tiap angka membawa ke tempat datanya, bukan sekadar hiasan.
@@ -19,12 +17,7 @@ export function Hero({ stats }: { stats: HomeStats }) {
   ];
   return (
     <section className="relative -mt-2 grid grid-cols-1 items-center gap-2 pb-12 md:grid-cols-[1.05fr_1fr] md:gap-8 md:pb-20" aria-labelledby="hero-title">
-      <motion.div
-        className="relative order-2 min-w-0 md:order-1"
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: EASE }}
-      >
+      <div className="rise relative order-2 min-w-0 md:order-1" style={{ animationDuration: "0.6s" }}>
         <p className="text-[15px] text-ink-2">Angkatan 2025 HMIF ITB</p>
         <h1
           id="hero-title"
@@ -62,7 +55,7 @@ export function Hero({ stats }: { stats: HomeStats }) {
             </li>
           ))}
         </ul>
-      </motion.div>
+      </div>
 
       <div className="relative order-1 h-[280px] md:order-2 md:h-[540px]">
         <div className="neu-well pointer-events-none absolute inset-2 rounded-[40px] md:inset-4 md:rounded-[56px]" aria-hidden />

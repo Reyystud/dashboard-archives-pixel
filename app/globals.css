@@ -243,6 +243,8 @@ html[data-intro="done"] .intro-loader { display: none; }
 
 /* Masuk berurutan lewat CSS (tanpa JS per kartu). Delay lewat style="animation-delay". */
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes hero-pop { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: none; } }
+.hero-pop { animation: hero-pop 1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both; }
 .rise { animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
 /* Lewati render kartu di luar layar (feed panjang). */

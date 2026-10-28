@@ -1,25 +1,11 @@
-"use client";
-
-import { motion, type HTMLMotionProps } from "motion/react";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
-
-/** Muncul (fade + naik) saat masuk viewport. */
+/** Muncul (fade + naik) lewat CSS murni: tanpa JS, tanpa opacity:0 yang menunggu hidrasi. */
 export function Reveal({
-  children, delay = 0, y = 18, className, as = "div", ...rest
-}: { children: React.ReactNode; delay?: number; y?: number; as?: "div" | "section" | "li" } & Omit<HTMLMotionProps<"div">, "children">) {
-  const M = motion[as] as typeof motion.div;
+  children, delay = 0, className, as: Tag = "div",
+}: { children: React.ReactNode; delay?: number; y?: number; className?: string; as?: "div" | "section" | "li" }) {
   return (
-    <M
-      className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.55, ease: EASE, delay }}
-      {...rest}
-    >
+    <Tag className={`rise${className ? ` ${className}` : ""}`} style={{ animationDelay: `${delay}s` }}>
       {children}
-    </M>
+    </Tag>
   );
 }
 
